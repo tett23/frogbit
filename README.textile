@@ -19,5 +19,9 @@ h2. 必要なもの
 h2. 実行方法
 
 <pre>
-sh ts2mp4.sh filename
+rake
+</pre>
+もしくは
+<pre>
+rake encode:ts
 </pre>
