@@ -1,0 +1,23 @@
+h1. frogbit
+
+アニメをひたすらエンコードしてフロッグしたい！！
+
+h2. 必要なもの
+
+* ffmpeg
+
+オプションとか
+<pre>
+./configure --enable-gpl --enable-shared --enable-nonfree --enable-libfaac --enable-libmp3lame --enable-libvorbis --enable-libx264 --enable-libxvid --enable-zlib
+</pre>
+
+もう一度環境構築するのに参考にしそうなやつ
+
+* http://linux.justinhartman.com/FFmpeg,_FFmpeg-PHP,_Lame,_Libogg,_Libvorbis,_FLVtool2,_Mplayer,_Mencoder,_AMR_Installation
+* http://imoimo2010.blogspot.jp/2012/02/ffmpegdebian60.html
+
+h2. 実行方法
+
+<pre>
+sh ts2mp4.sh filename
+</pre>
