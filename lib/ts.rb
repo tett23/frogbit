@@ -7,6 +7,8 @@ class TS
     @name = get_filename_entity(original_name)
     @identification_code = TS.get_identification_code(original_name)
     @ext = :ts
+    @is_watched = false
+    @is_encoded = false
     set_attribute(parse_name())
   end
 
