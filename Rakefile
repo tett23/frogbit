@@ -18,4 +18,4 @@ DataMapper.finalize
 load './tasks/db.rake'
 load './tasks/encode.rake'
 
-task default: 'encode:ts'
+task default: 'encode:preprocess'
