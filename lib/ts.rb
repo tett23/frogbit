@@ -3,7 +3,7 @@
 class TS
   REGEX_GET_IDENTIFICATION_CODE = /\-.+$/
   def initialize(original_name)
-    @original_name = get_original_name(original_name)
+    @original_name = original_name
     @name = get_filename_entity(original_name)
     @identification_code = TS.get_identification_code(original_name)
     @ext = :ts
@@ -79,10 +79,6 @@ class TS
   end
 
   private
-  def get_original_name(original_filename)
-    original_filename.gsub(/^\d+\-(.+?\.ts)\.*$/, '\1')
-  end
-
   def get_filename_entity(video_file)
     name = video_file.gsub(/^\d+\-(.+)\.ts.*$/, '\1')
     if name.match(/\[/)

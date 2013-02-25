@@ -29,7 +29,6 @@ namespace :encode do
     ts_array.each do |ts|
       video = Video.new(ts.to_h(:video))
       video.save
-      p video.errors
     end
     system("sh ts2mp4.sh #{in_path} #{out_path} >> log/#{logtime}_encode.log")
   end
