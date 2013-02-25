@@ -4,7 +4,8 @@ class Video
   include DataMapper::Resource
 
   property :id, Serial
-  property :name, String, :required=>false
+  property :identification_code, String
+  property :name, String, :required=>true
   property :original_name, String
   property :recording_error, Text
   property :program, Text
@@ -17,5 +18,5 @@ class Video
   property :updated_at, DateTime
 
   belongs_to :series, :required=>false
-  has 1, :video_metadata
+  belongs_to :video_metadata, :required=>false
 end
