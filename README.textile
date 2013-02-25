@@ -2,14 +2,23 @@ h1. frogbit
 
 アニメをひたすらエンコードしてフロッグしたい！！
 
-h2. 必要なもの
+h2. 環境構築
 
 * ffmpeg
 
 オプションとか
-<pre>
-./configure --enable-gpl --enable-shared --enable-nonfree --enable-libfaac --enable-libmp3lame --enable-libvorbis --enable-libx264 --enable-libxvid --enable-zlib
-</pre>
+<pre>./configure --enable-gpl --enable-shared --enable-nonfree --enable-libfaac --enable-libmp3lame --enable-libvorbis --enable-libx264 --enable-libxvid --enable-zlib</pre>
+
+* DB
+
+MySQLを使う。
+必要なDBは、
+
+* frogbit_development
+* frogbit_production
+
+テーブルの作成は、
+<pre>rake db:upgrade</pre>
 
 もう一度環境構築するのに参考にしそうなやつ
 
@@ -18,10 +27,6 @@ h2. 必要なもの
 
 h2. 実行方法
 
-<pre>
-rake
-</pre>
+<pre>rake</pre>
 もしくは
-<pre>
-rake encode:ts
-</pre>
+<pre>rake encode:ts</pre>
