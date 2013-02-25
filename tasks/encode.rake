@@ -3,8 +3,22 @@
 REC_REGEX = /^\d+\-(.+)(\.ts.+)?/
 
 namespace :encode do
-  desc "encode ts2mp4"
-  task :ts do
+  desc '指定した分だけキューを処理する'
+  task :process_queue, [:process_count] do |task, args|
+    process_count = args[:process_count].nil? ? 1 : args[:process_count].to_i
+
+    process_count.to_i.times do
+      encode_queue = EncodeQueue.highest_priority_item()
+
+      encode_log = encode(encode_queue.video)
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>encode_log)
+
+      encode_queue.destroy
+    end
+  end
+
+  desc 'TS格納ディレクトリからファイルを読み込んでDBに追加＋EncodeQueueに追加'
+  task :preprocess do
     logtime = Date.today.strftime('%Y%m%d_%H%m%d')
     ts_array = TSArray.new
 
@@ -30,8 +44,9 @@ namespace :encode do
       video = Video.new(ts.to_h(:video))
       video_id = video.save
 
+      # すでに格納積みの場合はidが取得できない
+      video = Video.first(:identification_code=>video.identification_code)
       EncodeQueue.add_last(video.id)
     end
-    #system("sh ts2mp4.sh #{in_path} #{out_path} >> log/#{logtime}_encode.log")
   end
 end
