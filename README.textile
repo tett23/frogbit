@@ -17,8 +17,11 @@ MySQLを使う。
 * frogbit_development
 * frogbit_production
 
-テーブルの作成は、
+テーブルの作成と更新は、
 <pre>rake db:upgrade</pre>
+また、
+<pre>rake db:migrate</pre>
+を実行するとdrop tableを実行してから作成し直す
 
 もう一度環境構築するのに参考にしそうなやつ
 
@@ -27,6 +30,11 @@ MySQLを使う。
 
 h2. 実行方法
 
-<pre>rake</pre>
-もしくは
-<pre>rake encode:ts</pre>
+<pre>rake
+rake encode:preprocess</pre>
+でTSファイルやメタデータを読み込みDBに格納する。
+ふたつのコマンドは等価。
+
+<pre>rake encode:process_queue[count]</pre>
+で指定した数だけキューを処理（エンコード）する。
+引数なしの場合はひとつ処理する。
