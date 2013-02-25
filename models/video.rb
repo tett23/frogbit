@@ -4,7 +4,7 @@ class Video
   include DataMapper::Resource
 
   property :id, Serial
-  property :identification_code, String
+  property :identification_code, String, :unique=>true
   property :name, String, :required=>true
   property :original_name, String
   property :recording_error, Text

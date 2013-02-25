@@ -28,8 +28,10 @@ namespace :encode do
 
     ts_array.each do |ts|
       video = Video.new(ts.to_h(:video))
-      video.save
+      video_id = video.save
+
+      EncodeQueue.add_last(video.id)
     end
-    system("sh ts2mp4.sh #{in_path} #{out_path} >> log/#{logtime}_encode.log")
+    #system("sh ts2mp4.sh #{in_path} #{out_path} >> log/#{logtime}_encode.log")
   end
 end
