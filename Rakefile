@@ -8,10 +8,12 @@ require 'date'
 require 'yaml'
 require 'pp'
 
-require './lib/helper'
+$config = YAML.load_file('./config/encode.yml').symbolize_keys
 
+Dir["./lib/*.rb"].each {|file| require file }
 require './config/database'
 Dir["./models/*.rb"].each {|file| require file }
+DataMapper.finalize
 
 load './tasks/db.rake'
 load './tasks/encode.rake'

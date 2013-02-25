@@ -7,5 +7,5 @@ class EncodeQueue
   property :priority, Integer, :default=>100
   property :created_at, DateTime
 
-  has 1, :video
+  belongs_to :video, :required=>false
 end
