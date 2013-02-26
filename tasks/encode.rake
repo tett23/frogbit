@@ -15,8 +15,13 @@ namespace :encode do
         break
       end
 
-      encode_log = encode(encode_queue.video)
-      encode_queue.video.update(:is_encoded=>true, :encode_log=>encode_log)
+      result = encode(encode_queue.video)
+      unless result[:result].success?
+        puts encode_queue.video.name+'のエンコードに失敗'
+        next
+      end
+
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log])
 
       encode_queue.destroy
     end
