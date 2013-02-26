@@ -23,7 +23,7 @@ def encode(video)
   puts 'execute command: '+command
 
   out = ''
-  result = systemu('date', :out=>out)
+  result = systemu(command, :out=>out)
 
   {
     result: result,

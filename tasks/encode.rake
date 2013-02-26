@@ -17,7 +17,7 @@ namespace :encode do
 
       if encode_queue.video.output_name.blank?
         encode_queue.video.update(:is_encodable=>false)
-        puts encode_queue.video.original_filename+'はoutput_nameが空のためエンコード可能な状態でない'
+        puts encode_queue.video.original_name+'はoutput_nameが空のためエンコード可能な状態でない'
         encode_queue.destroy
 
         next
