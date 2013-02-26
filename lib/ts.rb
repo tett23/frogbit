@@ -17,6 +17,7 @@ class TS
   def add_program(program_file)
     path = "#{$config[:input_dir]}/#{program_file}"
     program = open(path).read.encode('utf-8', 'sjis')
+    program = program.gsub(/＃/, '#')
 
     @program = Moji.zen_to_han(program, Moji::ALNUM)
   end
