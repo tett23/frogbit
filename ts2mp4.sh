@@ -13,6 +13,7 @@ X264_HIGH_HDTV="-f mp4 -vf yadif=0 -vcodec libx264 x264opts \
   -r 30000/1001 -aspect 16:9 -s 1280x720 -bufsize 20000k -maxrate 25000k \
   -acodec libfaac -ac 2 -ar 48000 -ab 128k -threads ${CPU_CORES}"
 
-ffmpeg -y -i $TS ${X264_HIGH_HDTV} ${OUT}
+OUT = sed -e 's/ /\ /g' ${OUT}
+ffmpeg -y -i $TS ${X264_HIGH_HDTV} "${OUT}"
 
 exit
