@@ -16,12 +16,16 @@ class TS
 
   def add_program(program_file)
     path = "#{$config[:input_dir]}/#{program_file}"
-    @program = open(path).read.encode('utf-8', 'sjis')
+    program = open(path).read.encode('utf-8', 'sjis')
+
+    @program = Moji.zen_to_han(program, Moji::ALNUM)
   end
 
   def add_error(error_file)
     path = "#{$config[:input_dir]}/#{error_file}"
-    @error = open(path).read.encode('utf-8', 'sjis')
+    error = open(path).read.encode('utf-8', 'sjis')
+
+    @error = Moji.zen_to_han(error, Moji::ALNUM)
   end
 
   def self.get_identification_code(filename)
@@ -86,6 +90,9 @@ class TS
     if name.match(/\[/)
       name = name.gsub(/^(.+?)\[.+/, '\1')
     end
+
+    name = Moji.zen_to_han(name, Moji::ALNUM)
+    name = name.gsub(/　/, ' ')
 
     name
   end
