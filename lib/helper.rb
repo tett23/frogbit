@@ -17,13 +17,13 @@ end
 
 def encode(video)
   in_path = "#{$config[:input_dir]}/#{video.original_name}"
-  out_path = "#{$config[:output_dir]}/#{video.name}.mp4"
+  out_path = "#{$config[:output_dir]}/#{video.output_name}"
 
   command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
   puts 'execute command: '+command
 
   out = ''
-  result = systemu(command, :out=>out)
+  result = systemu('date', :out=>out)
 
   {
     result: result,

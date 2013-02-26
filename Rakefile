@@ -17,5 +17,6 @@ DataMapper.finalize
 
 load './tasks/db.rake'
 load './tasks/encode.rake'
+Dir["./tasks/*.rake"].each {|file| load file }
 
 task default: 'encode:preprocess'
