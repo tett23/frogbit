@@ -5,8 +5,11 @@ class Video
 
   property :id, Serial
   property :identification_code, String, :unique=>true
+  property :event_id, String, :unique=>true
   property :name, String, :required=>true
-  property :episode, Integer
+  property :output_name, String
+  property :episode_name, String
+  property :episode_number, Integer
   property :original_name, String
   property :saved_directory, String
   property :extension, Enum[:ts, :mp4, :avi]
@@ -15,6 +18,7 @@ class Video
   property :program, Text
   property :encode_log, Text
   property :recording_error, Text
+  property :is_encodable, Boolean, :default=>true
   property :created_at, DateTime
   property :updated_at, DateTime
 
