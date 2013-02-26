@@ -10,6 +10,11 @@ namespace :encode do
     process_count.to_i.times do
       encode_queue = EncodeQueue.highest_priority_item()
 
+      if encode_queue.nil?
+        puts 'キューが空になったので終了'
+        break
+      end
+
       encode_log = encode(encode_queue.video)
       encode_queue.video.update(:is_encoded=>true, :encode_log=>encode_log)
 
