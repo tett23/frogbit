@@ -20,6 +20,15 @@ class TS
     program = program.gsub(/＃/, '#')
 
     @program = Moji.zen_to_han(program, Moji::ALNUM)
+
+    parsed_data = parse_epg()
+    return @program if parsed_data.nil?
+    @output_name = parsed_data[:name]
+    @episode_name = parsed_data[:episode_name]
+    @episode_number = parsed_data[:episode_number]
+    @event_id = parsed_data[:event_id]
+
+    @program
   end
 
   def add_error(error_file)
@@ -38,13 +47,16 @@ class TS
     when :video
       {
         identification_code: @identification_code,
+        event_id: @event_id,
         name: @name,
+        output_name: @output_name,
+        episode_name: @episode_name,
+        episode_number: @episode_number,
         original_name: @original_name,
         recording_error: @error,
         program: @program,
         saved_directory: @saved_directory,
         extension: @ext,
-        episode: @episode,
         is_encoded: @is_encoded,
         is_watched: @is_watched
       }
@@ -94,6 +106,7 @@ class TS
 
     name = Moji.zen_to_han(name, Moji::ALNUM)
     name = name.gsub(/　/, ' ')
+    name = name.gsub(/＃/, '#')
 
     name
   end
@@ -116,5 +129,68 @@ class TS
       when '解'
       end
     end
+  end
+
+  def parse_epg
+    program = @program.gsub(/\r\n?/, "\n").chomp.strip
+    name = @name
+
+    if program.blank?
+      puts name+'のプログラム情報が空です'
+      return
+    end
+
+    event_id = program.split("\n").last.gsub(/^.*EventID:(\d+?)\(.+$/, '\1').strip
+    episode_number = nil
+    episode_name = nil
+
+    # 放送局によりかなり形式が異なる可能性あり。大体5行目に情報が入ってることが多い気がする
+    episode_data = program.split("\n")[4]
+    if episode_data.blank?
+      puts name+'のプログラム情報はパース出来ません'
+      return
+    end
+
+    circled_numbers = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'
+    circled_numbers_regex = /[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/
+    episode_data_regex = /[#|第](\d+)[話]?.*「(.+?)」/
+    only_episode_number_regex = /^.*#(\d+)$/
+    only_episode_name_regex = /^.*#{name}「(.+)」$/
+
+    # プログラムデータのパース
+    if episode_data.match(episode_data_regex) # #12「hogehoge」みたいな形式
+      matched = episode_data.match(episode_data_regex).to_a
+      episode_number = matched[1]
+      episode_name = matched[2]
+    elsif episode_data.match(circled_numbers_regex) # サブタイ(2)みたいなの
+      circled_number = episode_data.match(circled_numbers_regex).to_a.first
+      episode_number = circled_numbers.index(circled_number)+1
+      episode_name = episode_data.gsub(/^(.+)[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/, '\1')
+    elsif episode_data =~ only_episode_name_regex
+      episode_number = episode_data.gsub(only_episode_name_regex, '\1')
+    elsif episode_data =~ only_episode_number_regex # サブタイなし、話数のみ
+      episode_number = episode_data.gsub(only_episode_number_regex, '\1')
+    else
+      episode_name = episode_data
+    end
+
+    # タイトル（ファイル名にされているもの）のパース。同様のものはEPGの3行目に入っていることもある
+    if name =~ only_episode_number_regex # タイトルに話数のみある
+      episode_number = name.gsub(only_episode_number_regex, '\1')
+    elsif name =~ /^.+「(.+)」$/ # タイトルにサブタイのみある
+      episode_name = name.gsub(/^.+「(.+)」$/, '\1')
+      name = name.gsub(/^(.+)「.+」$/, '\1')
+    end
+
+    # 可能なら名前#(episode_count)「(episode_name)」_(event_id)の形式に変換する。
+    # 変換できない場合はある情報だけでやる
+    name = "#{name}#{episode_number ? '#'+episode_number.to_s : ''}#{episode_name ? "「#{episode_name}」" : ''}_#{event_id}.mp4"
+
+    {
+      name: name,
+      episode_name: episode_name,
+      episode_number: episode_number,
+      event_id: event_id
+    }
   end
 end

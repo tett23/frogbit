@@ -15,6 +15,14 @@ namespace :encode do
         break
       end
 
+      if encode_queue.video.output_name.blank?
+        encode_queue.video.update(:is_encodable=>false)
+        puts encode_queue.video.original_filename+'はoutput_nameが空のためエンコード可能な状態でない'
+        encode_queue.destroy
+
+        next
+      end
+
       result = encode(encode_queue.video)
       unless result[:result].success?
         puts encode_queue.video.name+'のエンコードに失敗'
