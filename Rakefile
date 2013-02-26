@@ -8,9 +8,9 @@ require 'date'
 require 'yaml'
 require 'pp'
 
-$config = YAML.load_file('./config/encode.yml').symbolize_keys
-
 Dir["./lib/*.rb"].each {|file| require file }
+$config = load_config()
+
 require './config/database'
 Dir["./models/*.rb"].each {|file| require file }
 DataMapper.finalize
