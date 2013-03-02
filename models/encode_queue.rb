@@ -65,4 +65,24 @@ class EncodeQueue
     encode_queue.update(:priority=>current_priority)
     self.update(:priority=>target_priority)
   end
+
+  def encodable?
+    !self.video.output_name.blank?
+  end
+
+  def encode
+    in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
+    out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
+
+    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
+
+    out = ''
+    result = systemu(command, :out=>out)
+
+    {
+      result: result,
+      command: command,
+      log: out
+    }
+  end
 end

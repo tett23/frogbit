@@ -15,7 +15,7 @@ namespace :encode do
         break
       end
 
-      if encode_queue.video.output_name.blank?
+      unless encode_queue.encodable?
         encode_queue.video.update(:is_encodable=>false)
         puts encode_queue.video.original_name+'はoutput_nameが空のためエンコード可能な状態でない'
         encode_queue.destroy
@@ -23,7 +23,7 @@ namespace :encode do
         next
       end
 
-      result = encode(encode_queue.video)
+      result = encode_queue.encode
       unless result[:result].success?
         puts encode_queue.video.name+'のエンコードに失敗'
         next
@@ -33,6 +33,31 @@ namespace :encode do
 
       encode_queue.destroy
     end
+  end
+
+  desc 'idを指定してエンコード'
+  task :encode, [:video_id] do |task, args|
+    video_id = args[:video_id]
+    return if video_id.nil?
+    encode_queue = EncodeQueue.first(:video_id=>video_id)
+    return if video_id.nil?
+
+    unless encode_queue.encodable?
+      encode_queue.video.update(:is_encodable=>false)
+      puts encode_queue.video.original_name+'はoutput_nameが空のためエンコード可能な状態でない'
+      encode_queue.destroy
+
+      return false
+    end
+
+    result = encode_queue.encode
+    unless result[:result].success?
+      puts encode_queue.video.name+'のエンコードに失敗'
+    end
+
+    encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log])
+
+    encode_queue.destroy
   end
 
   desc 'TS格納ディレクトリからファイルを読み込んでDBに追加＋EncodeQueueに追加'
