@@ -107,6 +107,7 @@ class TS
     name = Moji.zen_to_han(name, Moji::ALNUM)
     name = name.gsub(/　/, ' ')
     name = name.gsub(/＃/, '#')
+    name = name.gsub(/＜.+＞/, '')
 
     name
   end
@@ -166,17 +167,24 @@ class TS
       circled_number = episode_data.match(circled_numbers_regex).to_a.first
       episode_number = circled_numbers.index(circled_number)+1
       episode_name = episode_data.gsub(/^(.+)[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/, '\1')
-    elsif episode_data =~ only_episode_name_regex
+    elsif episode_data =~ only_episode_name_regex # サブタイのみ
       episode_number = episode_data.gsub(only_episode_name_regex, '\1')
     elsif episode_data =~ only_episode_number_regex # サブタイなし、話数のみ
       episode_number = episode_data.gsub(only_episode_number_regex, '\1')
+    elsif episode_data.match(/「(.+?)」/) # 最初に現れたカギ括弧のなかをとる名前
+      episode_name = episode_data.gsub(/^.*?「(.+?)」.*$/, '\1')
     else
-      episode_name = episode_data
+      episode_name = nil
     end
 
     # タイトル（ファイル名にされているもの）のパース。同様のものはEPGの3行目に入っていることもある
-    if name =~ only_episode_number_regex # タイトルに話数のみある
+    if name =~ /^(.+?)\s*「(.+)」\s*#(\d+).*$/ # タイトルにすべての情報が含まれている
+      matched = name.match(/^(.+?)\s*「(.+)」\s*#(\d+).*$/).to_a
+      matched.delete_at(0)
+      name, episode_name, episode_number = matched
+    elsif name =~ only_episode_number_regex # タイトルに話数のみある
       episode_number = name.gsub(only_episode_number_regex, '\1')
+      name = name.gsub(/#\d+/, '')
     elsif name =~ /^.+「(.+)」$/ # タイトルにサブタイのみある
       episode_name = name.gsub(/^.+「(.+)」$/, '\1')
       name = name.gsub(/^(.+)「.+」$/, '\1')
