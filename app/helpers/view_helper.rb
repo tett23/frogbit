@@ -25,4 +25,14 @@ EOS
   def clear_breadcrumbs
     @breadcrumbs = []
   end
+
+  def button_link(str, url, option={})
+    haml = <<EOS
+%a{:href=>'#{url}', :class=>'btn #{option[:button_class]}', :'data-method'=>'#{option[:method].nil? ? :get : option[:method]}'}
+  %i{:class=>'#{option[:icon]}'}
+  #{str}
+EOS
+
+    Haml::Engine.new(haml).render
+  end
 end

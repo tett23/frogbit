@@ -34,4 +34,35 @@ class EncodeQueue
 
     encode_queue.priority+1
   end
+
+  def self.list(options={})
+    default = {
+      order: :priority.asc
+    }
+    options = default.merge(options)
+
+    all(options)
+  end
+
+  def up
+    encode_queue = EncodeQueue.first(:priority.lt =>self.priority, :order=>:priority.desc)
+    return false if encode_queue.nil?
+
+    current_priority = self.priority
+    target_priority = encode_queue.priority
+
+    encode_queue.update(:priority=>current_priority)
+    self.update(:priority=>target_priority)
+  end
+
+  def down
+    encode_queue = EncodeQueue.first(:priority.gt =>self.priority, :order=>:priority.asc)
+    return false if encode_queue.nil?
+
+    current_priority = self.priority
+    target_priority = encode_queue.priority
+
+    encode_queue.update(:priority=>current_priority)
+    self.update(:priority=>target_priority)
+  end
 end
