@@ -46,6 +46,8 @@ GEM
       url_mount (~> 0.2.1)
     i18n (0.6.4)
     json (1.7.7)
+    kaminari (0.11.0)
+      kaminari
     mail (2.3.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -82,6 +84,9 @@ GEM
       padrino-core (= 0.10.7)
     polyglot (0.3.3)
     rack (1.5.2)
+    rack-datamapper-session (0.3)
+      dm-core (>= 0.9.10)
+      rack (>= 1.0)
     rack-protection (1.4.0)
       rack
     rake (10.0.3)
@@ -120,8 +125,11 @@ DEPENDENCIES
   dm-types
   dm-validations
   haml
+  kaminari
   moji
   padrino (= 0.10.7)
+  padrino-helpers
+  rack-datamapper-session
   rake
   sass
   sinatra-flash

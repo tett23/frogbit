@@ -25,6 +25,9 @@ gem 'thin'
 # gem 'active_support'
 gem 'moji'
 gem 'systemu'
+gem 'rack-datamapper-session'
+gem 'padrino-helpers'
+gem 'kaminari', :require => 'kaminari/sinatra'
 
 # Test requirements
 
