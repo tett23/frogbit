@@ -5,6 +5,7 @@ class EncodeQueue
 
   property :id, Serial
   property :priority, Integer, :default=>100
+  property :is_encoding, Boolean, :default=>false
   property :created_at, DateTime
 
   belongs_to :video, :unique=>true
@@ -67,10 +68,14 @@ class EncodeQueue
   end
 
   def encodable?
+    return false if self.is_encoding
+
     !self.video.output_name.blank?
   end
 
   def encode
+    return false if self.is_encoding
+
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
     out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
 

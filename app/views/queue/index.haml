@@ -1,5 +1,14 @@
 -# coding: utf-8
 
+
+-unless @encoding_video.blank?
+  .alert.alert-info
+    エンコード中の動画
+    %ul
+      -@encoding_video.each do |encode_queue|
+        %li=encode_queue.video.output_name
+
+
 %table.table.table-bordered
   %tr
     -%w[待機番号 ファイル名 並替え].each do |column_name|
