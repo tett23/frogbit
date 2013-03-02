@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 # Server requirements
 # gem 'thin' # or mongrel
@@ -7,6 +7,7 @@ source 'https://rubygems.org'
 # Project requirements
 gem 'rake'
 gem 'sinatra-flash', :require => 'sinatra/flash'
+gem 'rack', '~> 1.4.0'
 
 # Component requirements
 gem 'sass'
@@ -20,14 +21,14 @@ gem 'dm-aggregates'
 gem 'dm-types'
 gem 'dm-core'
 
-gem 'thin'
-# gem 'i18n'
-# gem 'active_support'
+# require console app
 gem 'moji'
 gem 'systemu'
+
+gem 'thin'
 gem 'rack-datamapper-session'
 gem 'padrino-helpers'
-gem 'kaminari', :require => 'kaminari/sinatra'
+gem 'kaminari', '~> 0.14.1', :require => 'kaminari/sinatra'
 
 # Test requirements
 
