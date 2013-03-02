@@ -35,6 +35,12 @@ Bundler.require(:default, PADRINO_ENV)
 # Add your before (RE)load hooks here
 #
 Padrino.before_load do
+  case PADRINO_ENV.to_sym
+  when :development
+    $config = YAML.load_file('./config/encode_development.yml').symbolize_keys
+  when :environment
+    $config = YAML.load_file('./config/encode_production.yml').symbolize_keys
+  end
 end
 
 ##
