@@ -1,0 +1,11 @@
+tr.watched {
+  background-color: #d5e0f1; }
+
+tr.unwatched {
+  background-color: #c8efea; }
+
+tr.encoded {
+  background-color: #f8fad4; }
+
+tr.encoded {
+  background-color: #f9dfd5; }

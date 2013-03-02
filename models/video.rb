@@ -24,4 +24,19 @@ class Video
 
   belongs_to :series, :required=>false
   belongs_to :video_metadata, :required=>false
+
+  PER_PAGE = 20
+
+  def self.list(options={})
+    default = {
+      order: :created_at.desc
+    }
+    options = default.merge(options)
+
+    all(options)
+  end
+
+  def self.detail(id, options={})
+    first(:id=>id)
+  end
 end
