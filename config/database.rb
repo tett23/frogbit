@@ -1,13 +1,19 @@
-# coding: utf-8
+##
+# A MySQL connection:
+# DataMapper.setup(:default, 'mysql://user:password@localhost/the_database_name')
+#
+# # A Postgres connection:
+# DataMapper.setup(:default, 'postgres://user:password@localhost/the_database_name')
+#
+# # A Sqlite3 connection
+# DataMapper.setup(:default, "sqlite3://" + Padrino.root('db', "development.db"))
+#
 
+DataMapper.logger = logger
 DataMapper::Property::String.length(255)
 
-case $env
-  when :development
-    DataMapper.logger = DataMapper::Logger.new($stdout, :debug)
-    #DataObjects::Mysql.logger = DataObjects::Logger.new(STDOUT, :debug)
-    DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_development')
-  when :production
-    DataMapper.logger = Logger.new('./log/database.log')
-    DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_production')
+case Padrino.env
+  when :development then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_development')
+  when :production  then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_production')
+  when :test        then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_test')
 end
