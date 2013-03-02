@@ -68,8 +68,6 @@ class EncodeQueue
   end
 
   def encodable?
-    return false if self.is_encoding
-
     !self.video.output_name.blank?
   end
 
@@ -79,6 +77,7 @@ class EncodeQueue
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
     out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
 
+    self.update(:is_encoding => true)
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
 
     out = ''

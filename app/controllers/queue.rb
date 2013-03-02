@@ -33,6 +33,8 @@ Frogbit.controllers :queue do
 
     unless encode_queue.encodable?
       flash[:error] = "「#{encode_queue.video.output_name}」はエンコード可能な状態でないです。キューから削除します"
+      encode_queue.destroy
+
       return redirect url(:queue, :index)
     end
 
@@ -42,13 +44,11 @@ Frogbit.controllers :queue do
       return redirect url(:queue, :index)
     end
     EM.defer do
-      encode_queue.update(:is_encoding => true)
-
       result = encode_queue.encode()
-      unless result
+      if result
         if encode_queue[:result].success?
           encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log])
-          encode_queue.destroy
+          #encode_queue.destroy
         end
       end
     end
