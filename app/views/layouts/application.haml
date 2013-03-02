@@ -1,0 +1,38 @@
+!!! 5
+%html
+  %head
+    %meta{charset: 'utf-8'}
+    =stylesheet_link_tag 'bootstrap', 'bootstrap-responsive'
+    =javascript_include_tag 'jquery', 'jquery-ujs', 'bootstrap', 'bootstrap-dropdown'
+    :sass
+      body
+        padding-top: 60px
+        padding-bottom: 40px
+      .sidebar-nav
+        padding: 9px 0
+
+      @media (max-width: 980px)
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right
+          float: none
+          padding-left: 5px
+          padding-right: 5px
+  %body
+    .navbar.navbar-inverse.navbar-fixed-top.topbar
+      .navbar-inner
+        .container-fluid
+          %a.btn.btn-navbar{:'data-toggle'=>'collapse', :'data-target'=>'.nav-collapse'}
+            %span.icon-bar
+          %a.brand frogbit
+          .nav-collapse.collapse
+            =partial 'parts/header_menu'
+    #wrap.container-fluid
+      .row-fluid
+        =partial 'parts/sidebar'
+        .span9
+          =breadcrumbs
+          =flash_tag :success, :class=>'alert alert-success'
+          =flash_tag :info, :class=>'alert alert-info'
+          =flash_tag :error, :class=>'alert alert-error'
+          =flash_tag :warning, :class=>'alert alert-warning'
+          =yield
