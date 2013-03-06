@@ -29,7 +29,7 @@ class Video
 
   def self.list(options={})
     default = {
-      order: :created_at.desc
+      order: [:created_at.desc, :id.desc]
     }
     options = default.merge(options)
 
