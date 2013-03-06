@@ -1,5 +1,7 @@
 require 'kaminari/sinatra'
 
+REC_REGEX = /^\d+\-(.+)(\.ts.+)?/
+
 class Frogbit < Padrino::Application
   register SassInitializer
   register Padrino::Rendering
