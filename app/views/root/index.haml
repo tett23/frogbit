@@ -1,0 +1,6 @@
+-# coding: utf-8
+
+%h2 新しい動画
+=partial 'parts/video_list', :locals=>{:videos=>@videos}
+%h2 エンコードキュー
+=partial 'parts/queue_list', :locals=>{:queue=>@encode_queue}
