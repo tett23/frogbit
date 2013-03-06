@@ -1,3 +1,9 @@
 -# coding: utf-8
 
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('インデックス再読込', url(:queue, :create), :icon=>'icon-hdd', :method=>:post)
+.clearfix
+
 =partial 'parts/queue_list', :locals=>{:queue=>@encode_queue}
