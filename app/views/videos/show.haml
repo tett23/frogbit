@@ -3,6 +3,12 @@
 %h2
   =@video.output_name
 
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('削除', url(:videos, :destroy, :id=>@video.id), :icon=>'icon-remove-sign', :method=>:delete)
+.clearfix
+
 %video{:controls=>true, :width=>'100%', :height=>'100%'}
   %source{:src=>video_path(@video)}
 
