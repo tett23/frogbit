@@ -13,6 +13,13 @@ class Frogbit < Padrino::Application
     add_breadcrumbs('frogbit', '/')
   end
 
+  get :'/' do
+    @videos = Video.list(:limit=>10)
+    @encode_queue = EncodeQueue.list()
+
+    render 'root/index'
+  end
+
   error 404 do
     render 'errors/404'
   end

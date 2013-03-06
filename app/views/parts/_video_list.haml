@@ -1,0 +1,10 @@
+-# coding: utf-8
+
+%table.table.table-bordered
+  %tr
+    -%w[id ファイル名].each do |column_name|
+      %th=column_name
+  -videos.each do |video|
+    %tr{:class=>video_class(video)}
+      %td=video.id
+      %td=link_to video.output_name, url(:videos, :show, :id=>video.id)
