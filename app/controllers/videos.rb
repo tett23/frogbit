@@ -17,4 +17,16 @@ Frogbit.controllers :videos do
 
     render 'videos/show', :layout=>'application'
   end
+
+  delete :destroy, :with=>:id do |id|
+    video = Video.detail(id)
+    error 404 if video.nil?
+    encode_queue = EncodeQueue.first(:video_id=>id)
+
+    encode_queue.destroy
+    flash[:success] = "「#{video.output_name}」を削除しました"
+    video.destroy
+
+    redirect url(:videos, :index)
+  end
 end
