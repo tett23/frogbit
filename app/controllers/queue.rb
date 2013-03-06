@@ -45,7 +45,7 @@ Frogbit.controllers :queue do
     end
     EM.defer do
       result = encode_queue.encode()
-      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log])
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
       encode_queue.destroy
     end
 
