@@ -29,7 +29,7 @@ namespace :encode do
         next
       end
 
-      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log])
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
 
       encode_queue.destroy
     end
