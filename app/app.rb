@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'kaminari/sinatra'
 
 REC_REGEX = /^\d+\-(.+)(\.ts.+)?/

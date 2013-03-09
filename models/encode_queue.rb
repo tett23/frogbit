@@ -72,16 +72,30 @@ class EncodeQueue
   end
 
   def encode
-    return false if self.is_encoding
+    if self.is_encoding
+      return {
+        result: false,
+        message: 'エンコード中'
+      }
+    end
 
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
     out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
+    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
 
     self.update(:is_encoding => true)
-    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
 
     out = ''
     result = systemu(command, :out=>out)
+
+    unless FileUtils.mv(out_path, "#{$config[:output_dir]}/#{self.video.output_name}")
+      self.update(:is_encoding => false)
+
+      return {
+        result: false,
+        message: 'ファイルの移動に失敗。NASが起動していない？'
+      }
+    end
 
     {
       result: result,
