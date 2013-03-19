@@ -38,6 +38,9 @@
     %th saved_directory
     %td=@video.saved_directory
   %tr
+    %th filesize
+    %td=number_to_human_size @video.filesize
+  %tr
     %th is_encodable
     %td=@video.is_encodable
   %tr
