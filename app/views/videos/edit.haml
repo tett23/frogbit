@@ -1,0 +1,8 @@
+-# coding: utf-8
+
+%h2
+  編集:
+  =@video.output_name
+
+-form_for :video, url(:videos, :update, :id=>@video.id), :method=>:put do |f|
+  =partial "videos/form", :locals => { :f => f }
