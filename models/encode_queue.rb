@@ -16,11 +16,14 @@ class EncodeQueue
     self.first(:order=>:priority.asc)
   end
 
-  def self.add_last(video_id)
+  def self.add_last(video_id, options={})
     encode_queue = EncodeQueue.get(:video_id=>video_id)
     return encode_queue unless encode_queue.nil?
-    video = Video.get(video_id)
-    return encode_queue if video.is_encoded
+
+    unless options[:force]
+      video = Video.get(video_id)
+      return encode_queue if video.is_encoded
+    end
 
     self.create({
       priority: self.last_priority(),
