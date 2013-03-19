@@ -51,4 +51,22 @@ Frogbit.controllers :videos do
 
     redirect url(:videos, :index)
   end
+
+  delete :destroy_ts, :with=>:id do |id|
+    video = Video.detail(id)
+    error 404 if video.nil?
+
+    ts_path = "#{$config[:input_dir]}/#{video.original_name}"
+    if File.exists?(ts_path)
+      FileUtils.rm(ts_path)
+      FileUtils.rm(ts_path+'.err') if File.exists?(ts_path+'.err')
+      FileUtils.rm(ts_path+'.program.txt') if File.exists?(ts_path+'.program.txt')
+
+      flash[:success] = "「#{video.output_name}」のTSを削除しました"
+    else
+      flash[:info] = "「#{video.output_name}」のTSは存在しません"
+    end
+
+    redirect url(:videos, :show, :id=>id)
+  end
 end
