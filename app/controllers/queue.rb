@@ -14,6 +14,16 @@ Frogbit.controllers :queue do
     render 'queue/index'
   end
 
+  post :add, :with=>:video_id do |video_id|
+    video = Video.detail(video_id)
+    error 404 if video.nil?
+
+    EncodeQueue.add_last(video.id, :force=>true) unless video.nil?
+
+    flash[:success] = "「#{video.output_name}」をキューに追加"
+    redirect(:queue, :index)
+  end
+
   post :create do
     ts_array = TSArray.new
 
