@@ -80,13 +80,27 @@ class EncodeQueue
     end
 
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
-    out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
+    out_path = "./out/#{self.video.output_name}"
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
+
+    unless File.exists?(in_path)
+      return {
+        result: false,
+        message: 'tsが存在しない'
+      }
+    end
 
     self.update(:is_encoding => true)
 
     out = ''
     result = systemu(command, :out=>out)
+
+    unless File.exists?(out_path)
+      return {
+        result: false,
+        message: 'ファイルが生成されていない？'
+      }
+    end
 
     unless FileUtils.mv(out_path, "#{$config[:output_dir]}/#{self.video.output_name}")
       self.update(:is_encoding => false)
