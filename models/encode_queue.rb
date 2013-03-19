@@ -83,6 +83,13 @@ class EncodeQueue
     out_path = "./out/#{self.video.output_name}"
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
 
+    unless File.exists?(in_path)
+      return {
+        result: false,
+        message: 'tsが存在しない'
+      }
+    end
+
     self.update(:is_encoding => true)
 
     out = ''
