@@ -80,7 +80,7 @@ class EncodeQueue
     end
 
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
-    out_path = "#{$config[:output_dir]}/#{self.video.output_name}"
+    out_path = "./out/#{self.video.output_name}"
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
 
     self.update(:is_encoding => true)
