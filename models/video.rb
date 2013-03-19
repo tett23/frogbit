@@ -12,6 +12,7 @@ class Video
   property :episode_number, Integer
   property :original_name, String
   property :saved_directory, String
+  property :filesize, Integer
   property :extension, Enum[:ts, :mp4, :avi]
   property :is_encoded, Boolean, :default=>false
   property :is_watched, Boolean, :default=>false

@@ -10,6 +10,16 @@ namespace :debug do
     encode_backend.start
   end
 
+  task :size do
+    Video.all.each do |video|
+      path = '/home/tett23/movie/frogbit/'+video.output_name
+      if File.exists?(path)
+        size = File.stat(path).size
+        video.update(:filesize => size)
+      end
+    end
+  end
+
   desc 'EPGのパースのてすと'
   task :parse_epg do
     Video.all.each do |video|
