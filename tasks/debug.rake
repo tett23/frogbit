@@ -1,6 +1,15 @@
 # coding: utf-8
 
 namespace :debug do
+  task :encode_all do
+    encode_backend = EncodeBackend.new
+    items = EncodeQueue.list()
+    items.each do |item|
+      encode_backend.queue << item
+    end
+    encode_backend.start
+  end
+
   desc 'EPGのパースのてすと'
   task :parse_epg do
     Video.all.each do |video|

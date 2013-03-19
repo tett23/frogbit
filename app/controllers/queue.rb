@@ -5,6 +5,11 @@ Frogbit.controllers :queue do
     @encode_queue = EncodeQueue.list()
     @encoding_video = EncodeQueue.list(:is_encoding=>true)
     add_breadcrumbs('エンコードキュー', url(:queue, :index))
+    @is_encoding = EncodeBackend.instance.encoding?
+
+    if @is_encoding
+      flash[:info] = "全件エンコード中です"
+    end
 
     render 'queue/index'
   end
@@ -40,6 +45,17 @@ Frogbit.controllers :queue do
     end
 
     flash[:success] = "動画インデックスを再読込しました"
+    redirect url(:queue, :index)
+  end
+
+  delete :destroy, :with=>:id do |id|
+    encode_queue = EncodeQueue.get(id)
+    error 404 if encode_queue.nil?
+
+    message = "「#{encode_queue.video.output_name}」をキューから削除"
+    encode_queue.destroy()
+
+    flash[:success] = message
     redirect url(:queue, :index)
   end
 
@@ -88,6 +104,26 @@ Frogbit.controllers :queue do
 
     flash[:info] = "「#{encode_queue.video.output_name}」のエンコードを開始しました"
 
+    redirect url(:queue, :index)
+  end
+
+  post :encode_all do
+    encode_backend = EncodeBackend.instance
+
+    if encode_backend.encoding?
+      flash[:info] = "エンコード中です"
+      return redirect url(:queue, :index)
+    end
+
+    items = EncodeQueue.list(:is_encoding=>false)
+    items.each do |item|
+      encode_backend.queue << item
+    end
+    EM.defer do
+      encode_backend.start
+    end
+
+    flash[:info] = "全件エンコードを開始しました"
     redirect url(:queue, :index)
   end
 end
