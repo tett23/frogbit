@@ -48,6 +48,17 @@ Frogbit.controllers :queue do
     redirect url(:queue, :index)
   end
 
+  delete :destroy, :with=>:id do |id|
+    encode_queue = EncodeQueue.get(id)
+    error 404 if encode_queue.nil?
+
+    message = "「#{encode_queue.video.output_name}」をキューから削除"
+    encode_queue.destroy()
+
+    flash[:success] = message
+    redirect url(:queue, :index)
+  end
+
   get :up, :with=>:id do |id|
     encode_queue = EncodeQueue.get(id)
     error 404 if encode_queue.nil?
