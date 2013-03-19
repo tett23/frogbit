@@ -88,6 +88,13 @@ class EncodeQueue
     out = ''
     result = systemu(command, :out=>out)
 
+    unless File.exists?(out_path)
+      return {
+        result: false,
+        message: 'ファイルが生成されていない？'
+      }
+    end
+
     unless FileUtils.mv(out_path, "#{$config[:output_dir]}/#{self.video.output_name}")
       self.update(:is_encoding => false)
 
