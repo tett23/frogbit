@@ -1,0 +1,19 @@
+-# coding: utf-8
+
+.form-horizontal
+  .control-group
+    %label.control-label タイトル
+    .controls
+      =f.text_field :episode_name, :value=>@video.episode_name
+  .control-group
+    %label.control-label 話数
+    .controls
+      =f.text_field :episode_number, :value=>@video.episode_number
+  .control-group
+    %label.control-label エンコード可能状態
+    .controls
+      =f.check_box :is_encodable
+  .control-group
+    .controls
+      =f.submit '保存', :class => 'btn btn-primary'
+      =f.submit '削除', :onclick => "window.location='#{url(:videos, :show, :id=>@video.id)}';return false", :class => :btn
