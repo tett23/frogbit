@@ -12,3 +12,4 @@
 %video{:controls=>true, :width=>'100%', :height=>'100%'}
   %source{:src=>video_path(@video)}
 
+=partial 'parts/log_list', :locals=>{:logs=>@logs}

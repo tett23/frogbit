@@ -4,3 +4,5 @@
 =partial 'parts/video_list', :locals=>{:videos=>@videos}
 %h2 エンコードキュー
 =partial 'parts/queue_list', :locals=>{:queue=>@encode_queue}
+%h2 エンコードログ
+=partial 'parts/log_list', :locals=>{:logs=>@logs}
