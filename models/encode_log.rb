@@ -12,6 +12,22 @@ class EncodeLog
 
   belongs_to :video, :unique=>false
 
+  def self.list(options={})
+    default = {
+      order: :created_at.desc
+    }
+    options = default.merge(options)
+
+    all(options)
+  end
+
+  def self.logs(video)
+    all(
+      video: video,
+      order: :created_at.desc
+    )
+  end
+
   def self.start(encode_queue)
     self.create({
       start_at: Time.now,

@@ -12,6 +12,8 @@ Frogbit.controllers :videos do
     @video = Video.detail(id)
     error 404 if @video.nil?
 
+    @logs = EncodeLog.logs(@video)
+
     add_breadcrumbs('動画一覧', url(:videos, :index))
     add_breadcrumbs(@video.output_name, url(:videos, :show, :id=>id))
 
