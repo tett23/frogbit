@@ -94,12 +94,8 @@ Frogbit.controllers :queue do
       return redirect url(:queue, :index)
     end
     EM.defer do
-      result = encode_queue.encode()
-
-      if result.result
-        encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
-        encode_queue.destroy
-      end
+      encode_backend = EncodeBackend.instance
+      encode_backend.encode(encode_queue)
     end
 
     flash[:info] = "「#{encode_queue.video.output_name}」のエンコードを開始しました"
