@@ -41,13 +41,8 @@ class EncodeBackend
       @is_encoding = true
 
       EM.defer do
-        result = encode_queue.encode()
-        p result
+        encode(encode_queue)
 
-        if result[:result]
-          encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
-          encode_queue.destroy
-        end
         @encoding_item = nil
         @is_encoding = false
       end
@@ -67,5 +62,27 @@ class EncodeBackend
     end
 
     encode.call()
+  end
+
+  def encode(encode_queue)
+    encode_log = EncodeLog.start(encode_queue)
+
+    begin
+      result = encode_queue.encode()
+      p result
+
+      encode_log.finish(result)
+    rescue
+      encode_log.finish({
+        result: false,
+        message: $!
+      })
+    ensure
+      encode_queue.destroy
+    end
+
+    if result[:result]
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
+    end
   end
 end

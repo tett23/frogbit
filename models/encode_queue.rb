@@ -93,7 +93,7 @@ class EncodeQueue
     self.update(:is_encoding => true)
 
     out = ''
-    result = systemu(command, :out=>out)
+    command_result = systemu(command, :out=>out)
 
     unless File.exists?(out_path)
       return {
@@ -112,8 +112,10 @@ class EncodeQueue
     end
 
     {
-      result: result,
+      result: true,
       command: command,
+      message: '正常に終了',
+      command_result: command_result,
       log: out
     }
   end
