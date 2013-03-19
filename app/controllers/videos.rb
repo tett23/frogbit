@@ -20,6 +20,26 @@ Frogbit.controllers :videos do
     render 'videos/show', :layout=>'application'
   end
 
+  get :edit, :with=>:id do |id|
+    @video = Video.detail(id)
+    error 404 if @video.nil?
+
+    render 'videos/edit'
+  end
+
+  put :update, :with=>:id do |id|
+    @video = Video.detail(id)
+    error 404 if @video.nil?
+
+    if @video.update(params[:video])
+      flash[:success] = '編集しました'
+    else
+      flash[:success] = '編集に失敗しました'
+    end
+
+    redirect url(:videos, :show, :id=>@video.id)
+  end
+
   delete :destroy, :with=>:id do |id|
     video = Video.detail(id)
     error 404 if video.nil?
