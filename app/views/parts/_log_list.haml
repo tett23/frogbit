@@ -5,7 +5,7 @@
     -%w[名前 状態 処理日時 処理時間 ログ].each do |column_name|
       %th=column_name
   -logs.each do |log|
-    -secs = (log.finish_at.to_time.to_i-log.start_at.to_time.to_i).to_i
+    -secs = (log.finish_at.to_time.to_i-log.start_at.to_time.to_i).to_i rescue 0
     %tr
       %td=link_to log.video.output_name, url(:videos, :show, :id=>log.video_id)
       %td=log.status
