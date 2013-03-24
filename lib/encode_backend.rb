@@ -82,7 +82,13 @@ class EncodeBackend
     end
 
     if result[:result]
-      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir])
+      path = $config[:output_dir]+'/'+encode_queue.video.output_name
+      size = nil
+      if File.exists?(path)
+        size = File.stat(path).size
+      end
+
+      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir], :filesize=>size)
     end
   end
 end
