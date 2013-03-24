@@ -3,6 +3,9 @@
 class TS
   REGEX_GET_IDENTIFICATION_CODE = /\-.+$/
   def initialize(original_name)
+    ext = File.extname(original_name)
+    original_name = original_name.gsub(/^(\d+\-.+\.ts)/, '\1') if ext=='.err' || ext=='.txt'
+
     @original_name = original_name
     @name = get_filename_entity(original_name)
     @identification_code = TS.get_identification_code(original_name)
