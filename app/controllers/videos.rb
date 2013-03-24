@@ -45,7 +45,7 @@ Frogbit.controllers :videos do
     error 404 if video.nil?
     encode_queue = EncodeQueue.first(:video_id=>id)
 
-    encode_queue.destroy
+    encode_queue.destroy unless encode_queue.nil?
     flash[:success] = "「#{video.output_name}」を削除しました"
     video.destroy
 
