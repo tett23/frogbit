@@ -40,4 +40,10 @@ class Video
   def self.detail(id, options={})
     first(:id=>id)
   end
+
+  def exists_ts?
+    ts_path = "#{$config[:input_dir]}/#{self.original_name}"
+
+    File.exists?(ts_path)
+  end
 end

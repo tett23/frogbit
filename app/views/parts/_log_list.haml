@@ -15,4 +15,4 @@
       %td=log.body
       %td=number_to_human_size log.video.filesize
       %td
-        =button_link('', url(:videos, :destroy_ts, :id=>log.video.id), :icon=>'icon-trash', :method=>:delete, :confirm=>true)
+        =button_link('', url(:videos, :destroy_ts, :id=>log.video.id), :icon=>'icon-trash', :method=>:delete, :confirm=>true, :disabled=>!log.video.exists_ts?)
