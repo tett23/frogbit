@@ -2,7 +2,7 @@
 
 %table.table.table-bordered
   %tr
-    -%w[名前 状態 処理日時 処理時間 ログ].each do |column_name|
+    -%w[名前 状態 処理日時 処理時間 ログ サイズ 操作].each do |column_name|
       %th=column_name
   -logs.each do |log|
     -next if log.video.nil?
@@ -13,3 +13,6 @@
       %td=log.created_at.to_s(:db)
       %td=Time.now.midnight.advance(:seconds => secs).strftime('%T') # 経過時間を求める
       %td=log.body
+      %td=number_to_human_size log.video.filesize
+      %td
+        =button_link('', url(:videos, :destroy_ts, :id=>log.video.id), :icon=>'icon-trash', :method=>:delete, :confirm=>true)
