@@ -27,12 +27,21 @@ EOS
   end
 
   def button_link(str, url, option={})
+    default_confirm_message = '実行しますか？'
+    attributes = {
+      href: url
+    }
+    attributes[:class] = "btn #{option[:button_class]}"
+    attributes[:'data-method'] = "#{option[:method].nil? ? :get : option[:method]}"
+    attributes[:disabled] = true if option[:disabled]
+    attributes[:'data-confirm'] = option[:confirm_message] || default_confirm_message if option[:confirm]
+
     haml = <<EOS
-%a{:href=>'#{url}', :class=>'btn #{option[:button_class]}', :'data-method'=>'#{option[:method].nil? ? :get : option[:method]}', #{':disabled=>true' if option[:disabled]}}
+%a{attributes}
   %i{:class=>'#{option[:icon]}'}
   #{str}
 EOS
 
-    Haml::Engine.new(haml).render
+    Haml::Engine.new(haml).render(Object.new, :attributes=>attributes)
   end
 end
