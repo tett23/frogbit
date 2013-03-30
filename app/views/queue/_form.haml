@@ -1,0 +1,11 @@
+-# coding: utf-8
+
+.form-horizontal
+  .control-group
+    %label.control-label 出力サイズ
+    .controls
+      =f.select :encode_size, :options=>EncodeQueue::ENCODE_SIZE, :include_blank=>false
+  .control-group
+    .controls
+      =f.submit '保存', :class => 'btn btn-primary'
+      =button_link('キャンセル', url(:queue, :index))

@@ -58,6 +58,25 @@ Frogbit.controllers :queue do
     redirect url(:queue, :index)
   end
 
+  get :edit, :with=>:id do |id|
+    @encode_queue = EncodeQueue.get(id)
+    return error 404 if @encode_queue.nil?
+
+    render 'queue/edit'
+  end
+
+  put :update, :with=>:id do |id|
+    encode_queue = EncodeQueue.get(id)
+    return error 404 if encode_queue.nil?
+
+    size = params[:video][:encode_size]
+    encode_queue.update_size(size)
+
+    message = "「#{encode_queue.video.output_name}」をの出力サイズを#{size}に変更"
+    flash[:success] = message
+    redirect url(:queue, :index)
+  end
+
   delete :destroy, :with=>:id do |id|
     encode_queue = EncodeQueue.get(id)
     error 404 if encode_queue.nil?
