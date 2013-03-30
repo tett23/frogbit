@@ -12,6 +12,11 @@ class EncodeQueue
 
   belongs_to :video, :unique=>true
 
+  ENCODE_SIZE = [
+    '1440x1080',
+    '1280x720'
+  ]
+
   def self.highest_priority_item
     return nil if self.count.zero?
 
@@ -144,5 +149,11 @@ class EncodeQueue
 
   def output_size
     (self.width && self.height) ? "#{self.width}x#{self.height}" : nil
+  end
+
+  def update_size(size)
+    width, height = size.split('x')
+
+    self.update(width: width, height: height)
   end
 end
