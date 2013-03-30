@@ -152,7 +152,14 @@ class TS
     episode_data = program.split("\n")[4]
     if episode_data.blank?
       puts name+'のプログラム情報はパース出来ません'
-      return
+
+      name = "#{name}_#{event_id}.mp4"
+      return {
+        name: name,
+        episode_name: nil,
+        episode_number: nil,
+        event_id: event_id
+      }
     end
 
     circled_numbers = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'

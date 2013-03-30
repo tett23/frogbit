@@ -91,4 +91,8 @@ class EncodeBackend
       encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir], :filesize=>size)
     end
   end
+
+  def encoding?
+    @is_encoding
+  end
 end

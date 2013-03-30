@@ -5,6 +5,8 @@ class EncodeQueue
 
   property :id, Serial
   property :priority, Integer, :default=>100
+  property :width, Integer, :default=>1440
+  property :height, Integer, :default=>1080
   property :is_encoding, Boolean, :default=>false
   property :created_at, DateTime
 
@@ -84,7 +86,7 @@ class EncodeQueue
 
     in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
     out_path = "./out/#{self.video.output_name}"
-    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}'"
+    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}' #{self.width} #{self.height}"
 
     unless File.exists?(in_path)
       return {
@@ -105,7 +107,7 @@ class EncodeQueue
       }
     end
 
-    unless FileUtils.mv(out_path, "#{$config[:output_dir]}/#{self.video.output_name}")
+    unless FileUtils.mv(out_path, self.output_path)
       self.update(:is_encoding => false)
 
       return {
@@ -119,7 +121,28 @@ class EncodeQueue
       command: command,
       message: '正常に終了',
       command_result: command_result,
-      log: out
+      log: out,
+      filename: self.video.output_name,
+      filesize: self.filesize,
+      width: self.width,
+      height: self.height
     }
+  end
+
+  def output_path
+    "#{$config[:output_dir]}/#{self.video.output_name}"
+  end
+
+  def filesize
+    size = nil
+    if File.exists?(self.output_path)
+      size = File.stat(self.output_path).size
+    end
+
+    size
+  end
+
+  def output_size
+    (self.width && self.height) ? "#{self.width}x#{self.height}" : nil
   end
 end

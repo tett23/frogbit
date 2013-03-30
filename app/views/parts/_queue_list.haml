@@ -10,12 +10,13 @@
 
 %table.table.table-bordered
   %tr
-    -%w[待機番号 ファイル名 並替え].each do |column_name|
+    -%w[待機番号 ファイル名 出力サイズ 並替え].each do |column_name|
       %th=column_name
   -queue.each do |encode_queue|
     %tr
       %td=encode_queue.priority
       %td=link_to encode_queue.video.output_name, url(:videos, :show, :id=>encode_queue.video_id)
+      %td=encode_queue.output_size
       %td
         =button_link('', url(:queue, :up, :id=>encode_queue.id), :icon=>'icon-arrow-up', :button_class=>'btn-small')
         =button_link('', url(:queue, :down, :id=>encode_queue.id), :icon=>'icon-arrow-down', :button_class=>'btn-small')
