@@ -1,6 +1,6 @@
 # coding: utf-8
 
-Frogbit.controllers :encode_logs, url: '/logs' do
+Frogbit.controllers :encode_logs, map: '/logs' do
   get :index do
     @logs = EncodeLog.list()
 
