@@ -3,6 +3,7 @@
 .pull-right
   .btn-toolbar
     .btn-group
+      =button_link('インデックス再読込', url(:encode_queue, :create), :icon=>'icon-hdd', :method=>:post)
       =button_link('全件処理', url(:queue, :process_all), :icon=>'icon-tasks', :method=>:post, :disabled=>!@running_jobs.blank?)
 .clearfix
 

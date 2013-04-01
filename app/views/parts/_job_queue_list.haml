@@ -12,5 +12,6 @@
       %td
         =button_link('', url(:queue, :up, :id=>job.id), :icon=>'icon-arrow-up', :button_class=>'btn-small')
         =button_link('', url(:queue, :down, :id=>job.id), :icon=>'icon-arrow-down', :button_class=>'btn-small')
+        =button_link('', url(:queue, :process, :id=>job.id), :icon=>'icon-play', :button_class=>'btn-small', :method=>:post)
         =button_link('', url(:queue, :destroy, :id=>job.id), :icon=>'icon-remove-sign', :button_class=>'btn-small', :method=>:delete)
 

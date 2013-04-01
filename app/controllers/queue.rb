@@ -39,6 +39,16 @@ Frogbit.controllers :queue do
     redirect url(:queue, :index)
   end
 
+  post :process, with: :id do |id|
+    job = JobQueue.get(id)
+    return error 404 if job.nil?
+
+    JobBackend.instance.process(job)
+
+    message = "「#{job.video.output_name}」の#{job.type}を処理開始"
+    redirect url(:queue, :index)
+  end
+
   post :process_all do
     JobBackend.instance.process_all()
 

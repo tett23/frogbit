@@ -9,16 +9,9 @@
 
 %table.table.table-bordered
   %tr
-    -%w[待機番号 ファイル名 出力サイズ 並替え].each do |column_name|
+    -%w[ファイル名 出力サイズ].each do |column_name|
       %th=column_name
   -queue.each do |encode_queue|
     %tr
-      %td=encode_queue.priority
       %td=link_to encode_queue.video.output_name, url(:videos, :show, :id=>encode_queue.video.id)
       %td=link_to encode_queue.output_size, url(:encode_queue, :edit, :id=>encode_queue.id)
-      %td
-        =button_link('', url(:encode_queue, :up, :id=>encode_queue.id), :icon=>'icon-arrow-up', :button_class=>'btn-small')
-        =button_link('', url(:encode_queue, :down, :id=>encode_queue.id), :icon=>'icon-arrow-down', :button_class=>'btn-small')
-        =button_link('', url(:encode_queue, :encode, :id=>encode_queue.id), :icon=>'icon-film', :button_class=>'btn-small')
-        =button_link('', url(:encode_queue, :destroy, :id=>encode_queue.id), :icon=>'icon-remove-sign', :button_class=>'btn-small', :method=>:delete)
-

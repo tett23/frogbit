@@ -4,7 +4,6 @@ class EncodeQueue
   include DataMapper::Resource
 
   property :id, Serial
-  property :priority, Integer, :default=>100
   property :width, Integer, :default=>1440
   property :height, Integer, :default=>1080
   property :is_encoding, Boolean, :default=>false
@@ -18,12 +17,6 @@ class EncodeQueue
     '480x360'
   ]
 
-  def self.highest_priority_item
-    return nil if self.count.zero?
-
-    self.first(:order=>:priority.asc)
-  end
-
   def self.add_last(video_id, options={})
     encode_queue = EncodeQueue.get(:video_id=>video_id)
     return encode_queue unless encode_queue.nil?
@@ -34,48 +27,17 @@ class EncodeQueue
     end
 
     self.create({
-      priority: self.last_priority(),
       video_id: video_id
     })
   end
 
-  def self.last_priority
-    encode_queue = self.all(:order=>:priority.desc).first
-
-    return 1 if encode_queue.nil?
-
-    encode_queue.priority+1
-  end
-
   def self.list(options={})
     default = {
-      order: :priority.asc
+      order: :created_at.asc
     }
     options = default.merge(options)
 
     all(options)
-  end
-
-  def up
-    encode_queue = EncodeQueue.first(:priority.lt =>self.priority, :order=>:priority.desc)
-    return false if encode_queue.nil?
-
-    current_priority = self.priority
-    target_priority = encode_queue.priority
-
-    encode_queue.update(:priority=>current_priority)
-    self.update(:priority=>target_priority)
-  end
-
-  def down
-    encode_queue = EncodeQueue.first(:priority.gt =>self.priority, :order=>:priority.asc)
-    return false if encode_queue.nil?
-
-    current_priority = self.priority
-    target_priority = encode_queue.priority
-
-    encode_queue.update(:priority=>current_priority)
-    self.update(:priority=>target_priority)
   end
 
   def encodable?

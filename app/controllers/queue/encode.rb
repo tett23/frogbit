@@ -6,11 +6,6 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     @encoding_video = EncodeQueue.list(:is_encoding=>true)
     add_breadcrumbs('ジョブ一覧', url(:queue, :index))
     add_breadcrumbs('エンコードキュー', url(:encode_queue, :index))
-    @is_encoding = EncodeBackend.instance.encoding?
-
-    if @is_encoding
-      flash[:info] = "全件エンコード中です"
-    end
 
     render 'queue/encode/index'
   end
@@ -93,70 +88,6 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     encode_queue.destroy()
 
     flash[:success] = message
-    redirect url(:encode_queue, :index)
-  end
-
-  get :up, :with=>:id do |id|
-    encode_queue = EncodeQueue.get(id)
-    error 404 if encode_queue.nil?
-
-    encode_queue.up()
-
-    redirect url(:encode_queue, :index)
-  end
-
-  get :down, :with=>:id do |id|
-    encode_queue = EncodeQueue.get(id)
-    error 404 if encode_queue.nil?
-
-    encode_queue.down()
-
-    redirect url(:encode_queue, :index)
-  end
-
-  get :encode, :with=>:id do |id|
-    encode_queue = EncodeQueue.get(id)
-    error 404 if encode_queue.nil?
-
-    unless encode_queue.encodable?
-      flash[:error] = "「#{encode_queue.video.output_name}」はエンコード可能な状態でないです。キューから削除します"
-      encode_queue.destroy
-
-      return redirect url(:encode_queue, :index)
-    end
-
-    # 非同期でエンコード処理
-    if encode_queue.is_encoding
-      flash[:error] = "「#{encode_queue.video.output_name}」はエンコード中です"
-      return redirect url(:encode_queue, :index)
-    end
-    EM.defer do
-      encode_backend = EncodeBackend.instance
-      encode_backend.encode(encode_queue)
-    end
-
-    flash[:info] = "「#{encode_queue.video.output_name}」のエンコードを開始しました"
-
-    redirect url(:encode_queue, :index)
-  end
-
-  post :encode_all do
-    encode_backend = EncodeBackend.instance
-
-    if encode_backend.encoding?
-      flash[:info] = "エンコード中です"
-      return redirect url(:encode_queue, :index)
-    end
-
-    items = EncodeQueue.list(:is_encoding=>false)
-    items.each do |item|
-      encode_backend.queue << item
-    end
-    EM.defer do
-      encode_backend.start
-    end
-
-    flash[:info] = "全件エンコードを開始しました"
     redirect url(:encode_queue, :index)
   end
 end

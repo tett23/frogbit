@@ -12,10 +12,9 @@ class JobBackend
   end
 
   def process(job_id)
-    EM.defer do
-      job = JobBackend.get(job_id)
-      reutrn false if job.nil?
+    return false if job.nil?
 
+    EM.defer do
       execute_job(job)
     end
   end
