@@ -14,7 +14,8 @@ class EncodeQueue
 
   ENCODE_SIZE = [
     '1440x1080',
-    '1280x720'
+    '1280x720',
+    '480x360'
   ]
 
   def self.highest_priority_item
