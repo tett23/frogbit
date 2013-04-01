@@ -82,7 +82,7 @@ class JobQueue
         add_log self.video.repair()
       when :encode
         encode_queue = EncodeQueue.all(video: self.video).first
-        add_log EncodeBackend.encode(EncodeQueue.all(encode_queue))
+        add_log EncodeBackend.instance.encode(encode_queue)
       else
         add_log '未定義のジョブ'
       end
