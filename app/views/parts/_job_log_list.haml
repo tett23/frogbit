@@ -1,0 +1,16 @@
+-# coding: utf-8
+
+%table.table.table-bordered
+  %tr
+    -%w[id 対象動画 状態 処理日時 処理時間 ログ].each do |column_name|
+      %th=column_name
+  -logs.each do |log|
+    -next if log.video.nil?
+    -secs = (log.finish_at.to_time.to_i-log.start_at.to_time.to_i).to_i rescue 0
+    %tr
+      %td=log.id
+      %td=link_to log.video.output_name, url(:videos, :show, :id=>log.video_id)
+      %td=log.status
+      %td=log.created_at.to_s(:db)
+      %td=Time.now.midnight.advance(:seconds => secs).strftime('%T') # 経過時間を求める
+      %td=log.body

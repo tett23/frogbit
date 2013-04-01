@@ -13,6 +13,15 @@ class JobLog
   belongs_to :job_queue, :required=>false
   belongs_to :video, :unique=>false
 
+  def self.list(options={})
+    default = {
+      order: :created_at.desc
+    }
+    options = default.merge(options)
+
+    all(options)
+  end
+
   def self.start(job)
     create(
       job_queue: job,

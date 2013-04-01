@@ -2,7 +2,7 @@
 
 Frogbit.controllers :logs do
   get :index do
-    @logs = EncodeLog.list()
+    @logs = JobLog.list()
 
     render 'logs/index'
   end
