@@ -27,7 +27,7 @@ class EncodeLog
 
   def self.logs(video)
     all(
-      video: video,
+      video_id: video.id,
       order: :created_at.desc
     )
   end
