@@ -69,9 +69,18 @@ class EncodeBackend
 
     begin
       result = encode_queue.encode()
-      p result
 
       encode_log.finish(result)
+
+      if result[:result]
+        path = $config[:output_dir]+'/'+encode_queue.video.output_name
+        size = nil
+        if File.exists?(path)
+          size = File.stat(path).size
+        end
+
+        encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir], :filesize=>size)
+      end
     rescue
       encode_log.finish({
         result: false,
@@ -79,16 +88,6 @@ class EncodeBackend
       })
     ensure
       encode_queue.destroy
-    end
-
-    if result[:result]
-      path = $config[:output_dir]+'/'+encode_queue.video.output_name
-      size = nil
-      if File.exists?(path)
-        size = File.stat(path).size
-      end
-
-      encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir], :filesize=>size)
     end
   end
 

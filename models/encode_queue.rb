@@ -89,7 +89,7 @@ class EncodeQueue
       }
     end
 
-    in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
+    in_path = self.input_path
     out_path = "./out/#{self.video.output_name}"
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}' #{self.width} #{self.height}"
 
@@ -104,6 +104,7 @@ class EncodeQueue
 
     out = ''
     command_result = systemu(command, :out=>out)
+    p command_result
 
     unless File.exists?(out_path)
       return {
@@ -132,6 +133,12 @@ class EncodeQueue
       width: self.width,
       height: self.height
     }
+  end
+
+  def input_path
+    original_ts = "#{$config[:input_dir]}/#{self.video.original_name}"
+
+    self.video.repaired_ts.blank? ? original_ts : self.video.repaired_ts
   end
 
   def output_path

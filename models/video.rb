@@ -12,6 +12,7 @@ class Video
   property :episode_number, Integer
   property :original_name, String
   property :saved_directory, String
+  property :repaired_ts, String
   property :filesize, Integer
   property :extension, Enum[:ts, :mp4, :avi]
   property :is_encoded, Boolean, :default=>false
@@ -45,5 +46,16 @@ class Video
     ts_path = "#{$config[:input_dir]}/#{self.original_name}"
 
     File.exists?(ts_path)
+  end
+
+  def repair
+    ts = "#{$config[:input_dir]}/#{self.original_name}"
+    repaired_ts = "./tmp/#{self.identification_code}"
+
+    command = "python drop_sd.py #{ts} tmp/#{self.original_name}"
+    out = ''
+    command_result = systemu(command, :out=>out)
+
+    self.update(repaired_ts: repaired_ts)
   end
 end

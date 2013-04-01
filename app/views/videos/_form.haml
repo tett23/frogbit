@@ -2,6 +2,14 @@
 
 .form-horizontal
   .control-group
+    %label.control-label TSファイル名
+    .controls
+      =f.text_field :original_name, :value=>@video.original_name
+  .control-group
+    %label.control-label 出力ファイル名
+    .controls
+      =f.text_field :output_name, :value=>@video.output_name
+  .control-group
     %label.control-label タイトル
     .controls
       =f.text_field :episode_name, :value=>@video.episode_name
