@@ -69,4 +69,16 @@ Frogbit.controllers :videos do
 
     redirect url(:videos, :show, :id=>id)
   end
+
+  post :repair, :with=>:id do |id|
+    video = Video.detail(id)
+    return error 404 if video.nil?
+
+    EM.defer do
+      video.repair()
+    end
+
+    flash[:info] = "「#{video.original_name}」のSD削除を開始しました"
+    redirect url(:videos, :show, :id=>id)
+  end
 end

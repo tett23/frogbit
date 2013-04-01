@@ -50,9 +50,9 @@ class Video
 
   def repair
     ts = "#{$config[:input_dir]}/#{self.original_name}"
-    repaired_ts = "./tmp/#{self.identification_code}"
+    repaired_ts = "./tmp/#{self.identification_code}.ts"
 
-    command = "python drop_sd.py #{ts} tmp/#{self.original_name}"
+    command = "python ./src/drop_sd.py '#{ts}' #{repaired_ts}"
     out = ''
     command_result = systemu(command, :out=>out)
 
