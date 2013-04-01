@@ -88,8 +88,8 @@ class EncodeQueue
       }
     end
 
-    unless self.repaired_ts.blank?
-      FileUtils.rm(repaired_ts)
+    unless self.video.repaired_ts.blank?
+      FileUtils.rm(self.video.repaired_ts)
     end
 
     {
