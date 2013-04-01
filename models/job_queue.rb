@@ -58,10 +58,12 @@ class JobQueue
 
     self.update(is_running: true)
 
-    self.process()
-    add_log(eval(self.callback).call.to_s) unless self.callback.blank?
+    result = self.process()
+    unless result && self.callback.blank?
+      add_log(eval(self.callback).call.to_s) rescue result = false
+    end
 
-    result_hash(true, log)
+    result_hash(result, log)
   end
 
   def process
@@ -78,7 +80,11 @@ class JobQueue
     rescue
       add_log($!)
       add_log($!.backtrace.join("\n"))
+
+      return false
     end
+
+    true
   end
 
   def self.running?
