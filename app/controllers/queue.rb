@@ -5,6 +5,8 @@ Frogbit.controllers :queue do
     @jobs = JobQueue.list()
     add_breadcrumbs('ジョブキュー', url(:queue, :index))
 
+    @running_jobs = JobQueue.running
+
     render 'queue/index'
   end
 
@@ -37,4 +39,10 @@ Frogbit.controllers :queue do
     redirect url(:queue, :index)
   end
 
+  post :process_all do
+    JobBackend.instance.process_all()
+
+    message = "ジョブの全件処理を開始"
+    redirect url(:queue, :index)
+  end
 end

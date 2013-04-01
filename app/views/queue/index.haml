@@ -1,3 +1,16 @@
 -# coding: utf-8
 
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('全件処理', url(:queue, :process_all), :icon=>'icon-tasks', :method=>:post, :disabled=>!@running_jobs.blank?)
+.clearfix
+
+-unless @running_jobs.blank?
+  .alert.alert-info
+    処理中のジョブ
+    %ul
+      -@running_jobs.each do |job|
+        %li="#{job.type}: #{job.video.output_name}"
+
 =partial 'parts/job_queue_list', :locals=>{:jobs=>@jobs}

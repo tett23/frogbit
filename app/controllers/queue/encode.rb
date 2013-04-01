@@ -54,6 +54,8 @@ Frogbit.controllers :encode_queue, map: '/queue' do
       # すでに格納積みの場合はidが取得できない
       video = Video.first(:identification_code=>video.identification_code)
       EncodeQueue.add_last(video.id) unless video.nil?
+      JobQueue.push(video, :encode)
+
     end
 
     flash[:success] = "動画インデックスを再読込しました"
