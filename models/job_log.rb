@@ -7,6 +7,7 @@ class JobLog
   property :body, Text
   property :start_at, DateTime
   property :finish_at, DateTime
+  property :type, Enum[:encode, :repair]
   property :status, Enum[:failure, :success, :in_progress]
   property :created_at, DateTime
 
@@ -27,7 +28,8 @@ class JobLog
       job_queue: job,
       video: job.video,
       start_at: Time.now,
-      status: :in_progress
+      status: :in_progress,
+      type: job.type
     )
   end
 

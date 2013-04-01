@@ -2,7 +2,7 @@
 
 %table.table.table-bordered
   %tr
-    -%w[id 対象動画 状態 処理日時 処理時間 ログ].each do |column_name|
+    -%w[id 対象動画 アクション 状態 処理日時 処理時間 ログ].each do |column_name|
       %th=column_name
   -logs.each do |log|
     -next if log.video.nil?
@@ -10,7 +10,8 @@
     %tr
       %td=log.id
       %td=link_to log.video.output_name, url(:videos, :show, :id=>log.video_id)
+      %td=log.type
       %td=log.status
       %td=log.created_at.to_s(:db)
       %td=Time.now.midnight.advance(:seconds => secs).strftime('%T') # 経過時間を求める
-      %td=log.body
+      %td=truncate log.body, :length=>50
