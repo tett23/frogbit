@@ -7,11 +7,12 @@
   .btn-toolbar
     .btn-group
       =button_link('編集', url(:videos, :edit, :id=>@video.id), :icon=>'icon-edit')
-      =button_link('キューに追加', url(:queue, :add, :video_id=>@video.id), :icon=>'icon-hdd', :method=>:post)
+      =button_link('キューに追加', url(:encode, :queue, :add, :video_id=>@video.id), :icon=>'icon-hdd', :method=>:post)
+      =button_link('SD削除', url(:videos, :repair, :id=>@video.id), :icon=>'icon-filter', :method=>:post, :confirm=>true, :disabled=>!@video.exists_ts?)
       =button_link('TS削除', url(:videos, :destroy_ts, :id=>@video.id), :icon=>'icon-trash', :method=>:delete, :confirm=>true, :disabled=>!@video.exists_ts?)
       =button_link('削除', url(:videos, :destroy, :id=>@video.id), :icon=>'icon-remove-sign', :method=>:delete, :confirm=>true)
 
-=partial 'parts/log_list', :locals=>{:logs=>@logs}
+=partial 'parts/encode_log_list', :locals=>{:logs=>@logs}
 
 %table.table-bordered.table-striped
   %tr
@@ -38,6 +39,9 @@
   %tr
     %th saved_directory
     %td=@video.saved_directory
+  %tr
+    %th repaired_ts
+    %td=@video.repaired_ts
   %tr
     %th filesize
     %td=number_to_human_size @video.filesize
