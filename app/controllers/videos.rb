@@ -74,11 +74,9 @@ Frogbit.controllers :videos do
     video = Video.detail(id)
     return error 404 if video.nil?
 
-    EM.defer do
-      video.repair()
-    end
+    JobQueue.push(video, :repair)
 
-    flash[:info] = "「#{video.original_name}」のSD削除を開始しました"
+    flash[:info] = "「#{video.original_name}」のSD削除ジョブを追加"
     redirect url(:videos, :show, :id=>id)
   end
 end
