@@ -78,9 +78,9 @@ class JobQueue
   def process
     begin
       case self.type
-      when :encode
-        add_log self.video.repair()
       when :repair
+        add_log self.video.repair()
+      when :encode
         encode_queue = EncodeQueue.all(video: self.video).first
         add_log EncodeBackend.encode(EncodeQueue.all(encode_queue))
       else
