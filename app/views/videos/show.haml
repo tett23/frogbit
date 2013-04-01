@@ -12,7 +12,7 @@
       =button_link('TS削除', url(:videos, :destroy_ts, :id=>@video.id), :icon=>'icon-trash', :method=>:delete, :confirm=>true, :disabled=>!@video.exists_ts?)
       =button_link('削除', url(:videos, :destroy, :id=>@video.id), :icon=>'icon-remove-sign', :method=>:delete, :confirm=>true)
 
-=partial 'parts/log_list', :locals=>{:logs=>@logs}
+=partial 'parts/encode_log_list', :locals=>{:logs=>@logs}
 
 %table.table-bordered.table-striped
   %tr
