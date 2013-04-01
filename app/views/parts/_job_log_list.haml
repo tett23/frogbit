@@ -8,7 +8,7 @@
     -next if log.video.nil?
     -secs = (log.finish_at.to_time.to_i-log.start_at.to_time.to_i).to_i rescue 0
     %tr
-      %td=log.id
+      %td=link_to log.id, url(:logs, :show, :id=>log.id)
       %td=link_to log.video.output_name, url(:videos, :show, :id=>log.video_id)
       %td=log.type
       %td=log.status

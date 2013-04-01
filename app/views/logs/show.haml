@@ -1,0 +1,23 @@
+-# coding: utf-8
+
+-secs = (@log.finish_at.to_time.to_i-@log.start_at.to_time.to_i).to_i rescue 0
+
+%table.table-bordered.table-striped
+  %tr
+    %th id
+    %td=@log.id
+  %tr
+    %th video
+    %td=link_to @log.video.output_name, url(:videos, :show, :id=>@log.video_id)
+  %tr
+    %th type
+    %td=@log.status
+  %tr
+    %th status
+    %td=@log.created_at.to_s(:db)
+  %tr
+    %th proccess time
+    %td=Time.now.midnight.advance(:seconds => secs).strftime('%T') # 経過時間を求める
+  %tr
+    %th body
+    %td=simple_format @log.body
