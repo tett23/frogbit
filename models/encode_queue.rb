@@ -88,6 +88,10 @@ class EncodeQueue
       }
     end
 
+    unless self.repaired_ts.blank?
+      FileUtils.rm(repaired_ts)
+    end
+
     {
       result: true,
       command: command,
