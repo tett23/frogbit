@@ -57,5 +57,7 @@ class Video
     command_result = systemu(command, :out=>out)
 
     self.update(repaired_ts: repaired_ts)
+
+    command
   end
 end

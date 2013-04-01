@@ -69,6 +69,7 @@ class EncodeBackend
 
     begin
       result = encode_queue.encode()
+      message = "#{result[:message]}\n#{result[:command]}"
 
       encode_log.finish(result)
 
@@ -82,13 +83,18 @@ class EncodeBackend
         encode_queue.video.update(:is_encoded=>true, :encode_log=>result[:log], :saved_directory=>$config[:output_dir], :filesize=>size)
       end
     rescue
+      error = "#{$!.to_s}\n#{$!.backtrace.join("\n")}"
+      message = error
+
       encode_log.finish({
         result: false,
-        message: $!
+        message: error
       })
     ensure
       encode_queue.destroy
     end
+
+    message
   end
 
   def encoding?

@@ -96,6 +96,7 @@ class EncodeQueue
     unless File.exists?(in_path)
       return {
         result: false,
+        command: command,
         message: 'tsが存在しない'
       }
     end
@@ -109,6 +110,7 @@ class EncodeQueue
     unless File.exists?(out_path)
       return {
         result: false,
+        command: command,
         message: 'ファイルが生成されていない？'
       }
     end
@@ -118,6 +120,7 @@ class EncodeQueue
 
       return {
         result: false,
+        command: command,
         message: 'ファイルの移動に失敗。NASが起動していない？'
       }
     end
