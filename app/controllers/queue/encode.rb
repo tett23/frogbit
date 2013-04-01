@@ -50,7 +50,6 @@ Frogbit.controllers :encode_queue, map: '/queue' do
       video = Video.first(:identification_code=>video.identification_code)
       EncodeQueue.add_last(video.id) unless video.nil?
       JobQueue.push(video, :encode)
-
     end
 
     flash[:success] = "動画インデックスを再読込しました"
