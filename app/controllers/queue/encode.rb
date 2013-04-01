@@ -19,10 +19,11 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     video = Video.detail(video_id)
     error 404 if video.nil?
 
-    EncodeQueue.add_last(video.id, :force=>true) unless video.nil?
+    EncodeQueue.add_last(video.id, :force=>true)
+    JobQueue.push(video, :encode)
 
     flash[:success] = "「#{video.output_name}」をキューに追加"
-    redirect(:encode_queue, :index)
+    redirect url(:encode, :queue, :index)
   end
 
   post :create do
