@@ -47,7 +47,7 @@ class JobQueue
   end
 
   def self.push(video, type)
-    JobQueue.create(
+    JobQueue.first_or_create(
       video: video,
       type: type
     )
