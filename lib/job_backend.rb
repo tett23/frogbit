@@ -11,7 +11,7 @@ class JobBackend
     end
   end
 
-  def process(job_id)
+  def process(job)
     return false if job.nil?
 
     EM.defer do
