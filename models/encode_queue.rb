@@ -4,7 +4,6 @@ class EncodeQueue
   include DataMapper::Resource
 
   property :id, Serial
-  property :priority, Integer, :default=>100
   property :width, Integer, :default=>1440
   property :height, Integer, :default=>1080
   property :is_encoding, Boolean, :default=>false
@@ -14,14 +13,9 @@ class EncodeQueue
 
   ENCODE_SIZE = [
     '1440x1080',
-    '1280x720'
+    '1280x720',
+    '480x360'
   ]
-
-  def self.highest_priority_item
-    return nil if self.count.zero?
-
-    self.first(:order=>:priority.asc)
-  end
 
   def self.add_last(video_id, options={})
     encode_queue = EncodeQueue.get(:video_id=>video_id)
@@ -33,48 +27,17 @@ class EncodeQueue
     end
 
     self.create({
-      priority: self.last_priority(),
       video_id: video_id
     })
   end
 
-  def self.last_priority
-    encode_queue = self.all(:order=>:priority.desc).first
-
-    return 1 if encode_queue.nil?
-
-    encode_queue.priority+1
-  end
-
   def self.list(options={})
     default = {
-      order: :priority.asc
+      order: :created_at.asc
     }
     options = default.merge(options)
 
     all(options)
-  end
-
-  def up
-    encode_queue = EncodeQueue.first(:priority.lt =>self.priority, :order=>:priority.desc)
-    return false if encode_queue.nil?
-
-    current_priority = self.priority
-    target_priority = encode_queue.priority
-
-    encode_queue.update(:priority=>current_priority)
-    self.update(:priority=>target_priority)
-  end
-
-  def down
-    encode_queue = EncodeQueue.first(:priority.gt =>self.priority, :order=>:priority.asc)
-    return false if encode_queue.nil?
-
-    current_priority = self.priority
-    target_priority = encode_queue.priority
-
-    encode_queue.update(:priority=>current_priority)
-    self.update(:priority=>target_priority)
   end
 
   def encodable?
@@ -89,13 +52,14 @@ class EncodeQueue
       }
     end
 
-    in_path = "#{$config[:input_dir]}/#{self.video.original_name}"
+    in_path = self.input_path
     out_path = "./out/#{self.video.output_name}"
     command = "sh ts2mp4.sh '#{in_path}' '#{out_path}' #{self.width} #{self.height}"
 
     unless File.exists?(in_path)
       return {
         result: false,
+        command: command,
         message: 'tsが存在しない'
       }
     end
@@ -104,10 +68,12 @@ class EncodeQueue
 
     out = ''
     command_result = systemu(command, :out=>out)
+    p command_result
 
     unless File.exists?(out_path)
       return {
         result: false,
+        command: command,
         message: 'ファイルが生成されていない？'
       }
     end
@@ -117,8 +83,13 @@ class EncodeQueue
 
       return {
         result: false,
+        command: command,
         message: 'ファイルの移動に失敗。NASが起動していない？'
       }
+    end
+
+    unless self.repaired_ts.blank?
+      FileUtils.rm(repaired_ts)
     end
 
     {
@@ -132,6 +103,12 @@ class EncodeQueue
       width: self.width,
       height: self.height
     }
+  end
+
+  def input_path
+    original_ts = "#{$config[:input_dir]}/#{self.video.original_name}"
+
+    self.video.repaired_ts.blank? ? original_ts : self.video.repaired_ts
   end
 
   def output_path

@@ -1,0 +1,8 @@
+-# coding: utf-8
+
+%h2
+  編集:
+  =@encode_queue.video.output_name
+
+-form_for :video, url(:encode_queue, :update, :id=>@encode_queue.id), :method=>:put do |f|
+  =partial "queue/encode/form", :locals => { :f => f }

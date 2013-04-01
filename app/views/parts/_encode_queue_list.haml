@@ -1,0 +1,17 @@
+-# coding: utf-8
+
+-unless @encoding_video.blank?
+  .alert.alert-info
+    エンコード中の動画
+    %ul
+      -@encoding_video.each do |encode_queue|
+        %li=encode_queue.video.output_name
+
+%table.table.table-bordered
+  %tr
+    -%w[ファイル名 出力サイズ].each do |column_name|
+      %th=column_name
+  -queue.each do |encode_queue|
+    %tr
+      %td=link_to encode_queue.video.output_name, url(:videos, :show, :id=>encode_queue.video.id)
+      %td=link_to encode_queue.output_size, url(:encode_queue, :edit, :id=>encode_queue.id)
