@@ -1,0 +1,10 @@
+-# coding: utf-8
+
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('インデックス再読込', url(:queue, :create), :icon=>'icon-hdd', :method=>:post)
+      =button_link('全件エンコード', url(:queue, :encode_all), :icon=>'icon-film', :method=>:post, :disabled=>@is_encoding)
+.clearfix
+
+=partial 'parts/encode_queue_list', :locals=>{:queue=>@encode_queue}

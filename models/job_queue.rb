@@ -15,6 +15,15 @@ class JobQueue
 
   belongs_to :video, :unique=>false
 
+  def self.list(options={})
+    default = {
+      order: :priority.asc
+    }
+    options = default.merge(options)
+
+    all(options)
+  end
+
   def self.last_priority
     queue = JobQueue.all(:order=>:priority.desc).first
     return 1 if queue.nil?
@@ -95,6 +104,28 @@ class JobQueue
 
   def self.running
     self.all(is_running: true)
+  end
+
+  def up
+    job = JobQueue.first(:priority.lt =>self.priority, :order=>:priority.desc)
+    return false if job.nil?
+
+    current_priority = self.priority
+    target_priority = job.priority
+
+    job.update(:priority=>current_priority)
+    self.update(:priority=>target_priority)
+  end
+
+  def down
+    job = JobQueue.first(:priority.gt =>self.priority, :order=>:priority.asc)
+    return false if job.nil?
+
+    current_priority = self.priority
+    target_priority = job.priority
+
+    job.update(:priority=>current_priority)
+    self.update(:priority=>target_priority)
   end
 
   private
