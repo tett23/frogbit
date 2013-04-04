@@ -18,7 +18,7 @@ bf=16
 refs=6
 #directpred=3
 trellis=1
-deblock=-0.5:-0.5
+deblock=0.0:0.0
 flags=+ilme+loop
 #flags2=+bpyramid+wpred+mixed_refs+dct8x8+fastpskip
 # 画質設定
