@@ -4,8 +4,8 @@ class EncodeQueue
   include DataMapper::Resource
 
   property :id, Serial
-  property :width, Integer, :default=>1440
-  property :height, Integer, :default=>1080
+  property :width, Integer, :default=>1280
+  property :height, Integer, :default=>720
   property :is_encoding, Boolean, :default=>false
   property :created_at, DateTime
 
