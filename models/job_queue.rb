@@ -47,6 +47,9 @@ class JobQueue
   end
 
   def self.push(video, type)
+    job = JobQueue.get(video_id: video.id, type: type)
+    return job unless job.nil?
+
     JobQueue.first_or_create(
       video: video,
       type: type
