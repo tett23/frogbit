@@ -1,3 +1,5 @@
+-# coding: utf-8
+
 !!! 5
 %html
   %head
@@ -35,4 +37,7 @@
           =flash_tag :info, :class=>'alert alert-info'
           =flash_tag :error, :class=>'alert alert-error'
           =flash_tag :warning, :class=>'alert alert-warning'
+          %p
+            空き容量
+            =free_space
           =yield

@@ -14,4 +14,11 @@ Frogbit.helpers do
 
     path
   end
+
+  def free_space
+    stat = Sys::Filesystem.stat($config[:input_dir])
+    free = (stat.blocks_available * stat.block_size).to_f / 1024 / 1024 / 1024
+
+    free.to_s.scan(/^(\d+\.\d{0,3})/)[0][0].to_f.to_s + 'GB'
+  end
 end

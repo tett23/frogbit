@@ -29,6 +29,7 @@ gem 'thin'
 gem 'rack-datamapper-session'
 gem 'padrino-helpers'
 gem 'kaminari', '~> 0.14.1', :require => 'kaminari/sinatra'
+gem 'sys-filesystem'
 
 # Test requirements
 
