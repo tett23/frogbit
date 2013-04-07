@@ -60,4 +60,21 @@ class Video
 
     command
   end
+
+  def exists_repair?
+    repaired_path = repair_path()
+
+    File.exists?(repaired_path)
+  end
+
+  def rm_repaired
+    return unless exists_repair?
+
+    FileUtils.rm(repair_path())
+  end
+
+  private
+  def repair_path
+    "./tmp/#{self.identification_code}.ts"
+  end
 end
