@@ -1,0 +1,11 @@
+-# coding: utf-8
+
+%table.table.table-bordered
+  %tr
+    -%w[id 名前 期].each do |column_name|
+      %th=column_name
+  -series.each do |item|
+    %tr
+      %td=item.id
+      %td=link_to item.name, url(:series, :show, id: item.id)
+      %td=item.period

@@ -4,6 +4,7 @@
   .well.sidebar-nav
     %ul.nav.nav-list
       %li.nav-header 動画
+      %li=link_to 'シリーズ一覧', url(:series, :index)
       %li=link_to '動画一覧', url(:videos, :index)
       %li=link_to 'ジョブキュー', url(:queue, :index)
       %li=link_to 'エンコードキュー', url(:encode_queue, :index)
