@@ -34,6 +34,10 @@ class FilterRegexp
     "#{self.regexp}, #{self.alter}"
   end
 
+  def to_regexp
+    Regexp.new(self.regexp)
+  end
+
   private
   def check_valid_regexp
     Regexp.new(self.regexp) rescue [false, '妥当な正規表現でない']
