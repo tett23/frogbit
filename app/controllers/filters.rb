@@ -40,7 +40,7 @@ Frogbit.controllers :filters do
     error 404 if @filter_regexp.nil?
 
     add_breadcrumbs('フィルタ', url(:filters, :index))
-    add_breadcrumbs("編集: #{@filter.name}", url(:filters, :show, id: @filter.id))
+    add_breadcrumbs("編集: #{@filter_regexp.name}", url(:filters, :show, id: @filter_regexp.id))
 
     render 'filters/edit'
   end
