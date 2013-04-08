@@ -8,6 +8,7 @@ class TS
 
     @original_name = original_name
     @name = get_filename_entity(original_name)
+    @series_name = @name
     @identification_code = TS.get_identification_code(original_name)
     @ext = :ts
     @is_watched = false
@@ -70,8 +71,7 @@ class TS
       }
     when :series
       {
-        series_name: @series_name,
-        period: @period
+        name: @series_name
       }
     else
       {
@@ -166,7 +166,6 @@ class TS
       }
     end
 
-    p name, episode_data
     FilterRegexp.each do |filter|
       case filter.target
       when :description
@@ -175,7 +174,6 @@ class TS
         program.gsub!(filter.to_regexp, filter.alter)
       end
     end
-    p name, episode_data
 
     circled_numbers = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'
     circled_numbers_regex = /[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/
