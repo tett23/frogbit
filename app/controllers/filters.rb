@@ -54,4 +54,14 @@ Frogbit.controllers :filters do
     flash[:success] = "フィルタ「#{filter.name}」を編集しました"
     redirect url(:filters, :index)
   end
+
+  delete :destroy, with: :id do |id|
+    filter = FilterRegexp.get(id)
+    error 404 if filter.nil?
+
+    filter.destroy
+
+    flash[:success] = "フィルタ「#{filter.name}」を削除しました"
+    redirect url(:filters, :index)
+  end
 end

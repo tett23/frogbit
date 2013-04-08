@@ -7,6 +7,7 @@
   .btn-toolbar
     .btn-group
       =button_link('編集', url(:filters, :edit, id: @filter.id), :icon=>'icon-edit')
+      =button_link('削除', url(:filters, :destroy, id: @filter.id), :icon=>'icon-remove-sign', :confirm=>true, :method=>:delete)
 
 %table.table.table-bordered.table-striped
   %tr
