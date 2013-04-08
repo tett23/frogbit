@@ -1,0 +1,24 @@
+-# coding: utf-8
+
+-if @filter_regexp
+  -@filter_regexp.errors.each do |error|
+    =error
+
+.form-horizontal
+  .control-group
+    %label.control-label フィルタ対象
+    .controls
+      =f.select :target, :options=>FilterRegexp::TARGET_LIST
+  .control-group
+    %label.control-label 正規表現
+    .controls
+      =f.text_field :regexp
+  .control-group
+    %label.control-label 置換文字列
+    .controls
+      =f.text_field :alter
+
+  .control-group
+    .controls
+      =f.submit '保存', :class => 'btn btn-primary'
+      =button_link('キャンセル', url(:filters, :index))

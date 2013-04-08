@@ -1,0 +1,21 @@
+-# coding: utf-8
+
+%h2
+  =@filter.name
+
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('編集', url(:filters, :edit, id: @filter.id), :icon=>'icon-edit')
+      =button_link('削除', url(:filters, :destroy, id: @filter.id), :icon=>'icon-remove-sign', :confirm=>true, :method=>:delete)
+
+%table.table.table-bordered.table-striped
+  %tr
+    %th 対象
+    %td=@filter.target
+  %tr
+    %th 正規表現
+    %td=@filter.regexp
+  %tr
+    %th 置換文字列
+    %td=@filter.alter

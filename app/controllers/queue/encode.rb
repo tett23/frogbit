@@ -18,7 +18,7 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     JobQueue.push(video, :encode)
 
     flash[:success] = "「#{video.output_name}」をキューに追加"
-    redirect url(:encode, :queue, :index)
+    redirect url(:encode_queue, :index)
   end
 
   post :create do
@@ -53,7 +53,7 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     end
 
     flash[:success] = "動画インデックスを再読込しました"
-    redirect url(:encode_queue, :index)
+    redirect url(:queue, :index)
   end
 
   get :edit, :with=>:id do |id|

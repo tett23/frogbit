@@ -20,7 +20,7 @@ class TS
   def add_program(program_file)
     path = "#{$config[:input_dir]}/#{program_file}"
     program = open(path).read.encode('utf-8', 'sjis')
-    program = program.gsub(/＃/, '#')
+    program = program.gsub(/(＃|♯)/, '#')
 
     @program = Moji.zen_to_han(program, Moji::ALNUM)
 
@@ -109,8 +109,12 @@ class TS
 
     name = Moji.zen_to_han(name, Moji::ALNUM)
     name = name.gsub(/　/, ' ')
-    name = name.gsub(/＃/, '#')
+    name = name.gsub(/(＃|♯)/, '#')
     name = name.gsub(/＜.+＞/, '')
+
+    FilterRegexp.list(target: :filename).each do |filter|
+      name.gsub!(filter.to_regexp, filter.alter)
+    end
 
     name
   end
@@ -161,6 +165,17 @@ class TS
         event_id: event_id
       }
     end
+
+    p name, episode_data
+    FilterRegexp.each do |filter|
+      case filter.target
+      when :description
+        episode_data.gsub!(filter.to_regexp, filter.alter)
+      when :program
+        program.gsub!(filter.to_regexp, filter.alter)
+      end
+    end
+    p name, episode_data
 
     circled_numbers = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'
     circled_numbers_regex = /[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/

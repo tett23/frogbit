@@ -44,8 +44,10 @@ Frogbit.controllers :videos do
     video = Video.detail(id)
     error 404 if video.nil?
     encode_queue = EncodeQueue.first(:video_id=>id)
+    job_queue = JobQueue.all(video_id: id)
 
     encode_queue.destroy unless encode_queue.nil?
+    job_queue.destroy unless encode_queue.nil?
     flash[:success] = "「#{video.output_name}」を削除しました"
     video.destroy
 
@@ -78,5 +80,20 @@ Frogbit.controllers :videos do
 
     flash[:info] = "「#{video.original_name}」のSD削除ジョブを追加"
     redirect url(:videos, :show, :id=>id)
+  end
+
+  delete :destroy_repair, with: :id do |id|
+    video = Video.get(id)
+    return error 404 if video.nil?
+
+    unless video.exists_repair?
+      flash[:error] = "「#{video.output_name}」のSD削除済みTSは存在しません"
+      return redirect url(:videos, :show, id: id)
+    end
+
+    video.rm_repaired()
+
+    flash[:success] = "「#{video.output_name}」のSD削除済みTSを削除しました"
+    return redirect url(:videos, :show, id: id)
   end
 end

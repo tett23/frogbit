@@ -1,0 +1,12 @@
+-# coding: utf-8
+
+%table.table.table-bordered
+  %tr
+    -%w[id target regexp alter].each do |column_name|
+      %th=column_name
+  -filters.each do |filter|
+    %tr
+      %td=filter.id
+      %td=filter.target
+      %td=link_to filter.regexp, url(:filters, :show, id: filter.id)
+      %td=filter.alter
