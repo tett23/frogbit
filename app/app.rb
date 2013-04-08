@@ -17,9 +17,9 @@ class Frogbit < Padrino::Application
   end
 
   get :'/' do
-    @videos = Video.list(:limit=>10)
-    @encode_queue = EncodeQueue.list()
-    @logs = EncodeLog.list(:limit=>10)
+    @videos = Video.list(limit: 10)
+    @jobs = JobQueue.list(limit: 10)
+    @logs = JobLog.list(limit: 10)
 
     render 'root/index'
   end
