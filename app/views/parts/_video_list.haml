@@ -7,6 +7,6 @@
   -videos.each do |video|
     %tr{:class=>video_class(video)}
       %td=video.id
-      %td=link_to video.series.name, url(:series, :show, id: video.series.id)
+      %td=video.series.blank? ? '' : link_to(video.series.name, url(:series, :show, id: video.series.id))
       %td=link_to video.output_name, url(:videos, :show, :id=>video.id)
       %td=number_to_human_size video.filesize
