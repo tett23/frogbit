@@ -1,0 +1,4 @@
+-# coding: utf-8
+
+-form_for :filter_regexp, url(:filters, :create), :method=>:post do |f|
+  =partial "filters/form", :locals => { :f => f }

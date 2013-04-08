@@ -1,0 +1,8 @@
+-# coding: utf-8
+
+.pull-right
+  .btn-toolbar
+    .btn-group
+      =button_link('新規作成', url(:filters, :new), :icon=>'icon-pencil')
+
+=partial 'parts/filters_list', locals: {filters: @filters}

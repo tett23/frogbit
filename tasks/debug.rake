@@ -1,6 +1,18 @@
 # coding: utf-8
 
 namespace :debug do
+  task :create_series do
+    videos = Video.all
+    videos.each do |video|
+      series = Series.first_or_create(
+        name: video.name,
+        alt_name: video.name
+      )
+
+      video.update(series: series)
+    end
+  end
+
   task :encode_all do
     encode_backend = EncodeBackend.new
     items = EncodeQueue.list()
