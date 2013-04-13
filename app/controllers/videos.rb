@@ -30,6 +30,7 @@ Frogbit.controllers :videos do
   put :update, :with=>:id do |id|
     @video = Video.detail(id)
     error 404 if @video.nil?
+    params[:video][:output_name] = "#{params[:video][:name]}#{params[:video][:episode_number] ? '#'+params[:video][:episode_number].to_s : ''}#{params[:video][:episode_name] ? "「#{params[:video][:episode_name]}」" : ''}_#{@video.event_id}.mp4"
 
     if @video.update(params[:video])
       flash[:success] = '編集しました'
