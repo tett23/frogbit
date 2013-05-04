@@ -175,6 +175,8 @@ class TS
       end
     end
 
+    @series_name = name
+
     circled_numbers = '①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳'
     circled_numbers_regex = /[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/
     episode_data_regex = /[#|第](\d+)[話]?.*「(.+?)」/

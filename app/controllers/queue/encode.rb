@@ -46,15 +46,18 @@ Frogbit.controllers :encode_queue, map: '/queue' do
       video = ts.to_h(:video)
 
       # シリーズの追加
-      series = Series.add_or_first(ts.to_h(:series))
-      video[:series] = series
+      #series = Series.add_or_first(ts.to_h(:series)) || nil
+      #p series
+      #video[:series] = series
 
       video = Video.create(video)
 
       # すでに格納積みの場合はidが取得できない
-      video = Video.first(:identification_code=>video.identification_code) if video.is_encodable
-      EncodeQueue.add_last(video.id) if !video.nil? && !video.is_encoded
-      JobQueue.push(video, :encode) if !video.nil? && !video.is_encoded
+      video = Video.first(:identification_code=>video.identification_code)
+      if !video.nil? && video.is_encodable && !video.is_encoded
+        EncodeQueue.add_last(video.id)
+        JobQueue.push(video, :encode)
+      end
     end
 
     flash[:success] = "動画インデックスを再読込しました"
