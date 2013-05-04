@@ -72,7 +72,7 @@ Frogbit.controllers :videos do
       flash[:info] = "「#{video.output_name}」のTSは存在しません"
     end
 
-    redirect url(:videos, :show, :id=>id)
+    redirect url(:encode_logs, :index)
   end
 
   post :repair, :with=>:id do |id|
