@@ -13,7 +13,7 @@ DataMapper.logger = logger
 DataMapper::Property::String.length(255)
 
 case Padrino.env
-  when :development then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_development')
-  when :production  then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_production')
-  when :test        then DataMapper.setup(:default, 'mysql://tett23:password@192.168.11.11/frogbit_test')
+  when :development then DataMapper.setup(:default, 'mysql://tett23:password@192.168.1.101/frogbit_development')
+  when :production  then DataMapper.setup(:default, 'mysql://tett23:password@192.168.1.101/frogbit_production')
+  when :test        then DataMapper.setup(:default, 'mysql://tett23:password@192.168.1.101/frogbit_test')
 end
