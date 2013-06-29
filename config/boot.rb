@@ -4,7 +4,6 @@ PADRINO_ROOT = File.expand_path('../..', __FILE__) unless defined?(PADRINO_ROOT)
 
 # Load our dependencies
 require 'rubygems' unless defined?(Gem)
-require 'kaminari/sinatra'
 require 'bundler/setup'
 Bundler.require(:default, PADRINO_ENV)
 
