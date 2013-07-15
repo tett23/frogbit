@@ -31,6 +31,10 @@ gem 'padrino-helpers'
 gem 'kaminari', '~> 0.14.1', :require => 'kaminari/sinatra'
 gem 'sys-filesystem'
 
+gem 'tilt', '~> 1.3.0'
+gem 'coffee-script'
+gem 'coffee-filter'
+
 # Test requirements
 
 # Padrino Stable Gem

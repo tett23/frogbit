@@ -131,6 +131,12 @@ class JobQueue
     self.update(:priority=>target_priority)
   end
 
+  def self.update_all(jobs)
+    jobs.each do |job|
+      self.get(job[:id]).update(priority: job[:priority])
+    end
+  end
+
   private
   def result_hash(result, log)
     {

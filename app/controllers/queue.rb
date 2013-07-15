@@ -55,4 +55,20 @@ Frogbit.controllers :queue do
     message = "ジョブの全件処理を開始"
     redirect url(:queue, :index)
   end
+
+  put :update_all do
+    queue = []
+    params[:order].map do |job_id|
+      job_id.to_i
+    end.zip((0..params[:order].size-1).to_a) do |job_id, priority|
+      queue << {
+        id: job_id,
+        priority: priority
+      }
+    end
+
+    JobQueue.update_all(queue)
+
+    true.to_json
+  end
 end

@@ -17,18 +17,25 @@ GEM
     activesupport (3.2.12)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    addressable (2.2.8)
-    bcrypt-ruby (3.0.1)
+    addressable (2.3.5)
+    bcrypt-ruby (3.1.1)
     builder (3.0.4)
+    coffee-filter (0.1.3)
+      coffee-script (>= 2.2.0)
+      haml (< 4.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.6.3)
     daemons (1.1.9)
-    data_objects (0.10.12)
+    data_objects (0.10.13)
       addressable (~> 2.1)
     dm-aggregates (1.2.0)
       dm-core (~> 1.2.0)
     dm-constraints (1.2.0)
       dm-core (~> 1.2.0)
-    dm-core (1.2.0)
-      addressable (~> 2.2.6)
+    dm-core (1.2.1)
+      addressable (~> 2.3)
     dm-do-adapter (1.2.0)
       data_objects (~> 0.10.6)
       dm-core (~> 1.2.0)
@@ -49,21 +56,22 @@ GEM
       uuidtools (~> 2.1)
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
-    do_mysql (0.10.12)
-      data_objects (= 0.10.12)
+    do_mysql (0.10.13)
+      data_objects (= 0.10.13)
     erubis (2.7.0)
-    eventmachine (1.0.1)
+    eventmachine (1.0.3)
+    execjs (1.4.0)
+      multi_json (~> 1.0)
     fastercsv (1.5.5)
-    ffi (1.6.0)
-    haml (4.0.0)
-      tilt
-    hike (1.2.1)
+    ffi (1.9.0)
+    haml (3.1.8)
+    hike (1.2.3)
     http_router (0.10.2)
       rack (>= 1.0.0)
       url_mount (~> 0.2.1)
     i18n (0.6.4)
     journey (1.0.4)
-    json (1.7.7)
+    json (1.8.0)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -71,9 +79,9 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.21)
+    mime-types (1.23)
     moji (1.6)
-    multi_json (1.6.1)
+    multi_json (1.7.7)
     padrino (0.10.7)
       padrino-admin (= 0.10.7)
       padrino-cache (= 0.10.7)
@@ -108,13 +116,13 @@ GEM
     rack-datamapper-session (0.3)
       dm-core (>= 0.9.10)
       rack (>= 1.0)
-    rack-protection (1.4.0)
+    rack-protection (1.5.0)
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-    rake (10.0.3)
-    sass (3.2.6)
-    sinatra (1.3.5)
+    rake (10.1.0)
+    sass (3.2.9)
+    sinatra (1.3.6)
       rack (~> 1.4)
       rack-protection (~> 1.3)
       tilt (~> 1.3, >= 1.3.3)
@@ -129,23 +137,25 @@ GEM
     sys-filesystem (1.1.0)
       ffi
     systemu (2.5.2)
-    thin (1.5.0)
+    thin (1.5.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     thor (0.15.4)
-    tilt (1.3.4)
-    treetop (1.4.12)
+    tilt (1.3.7)
+    treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
     url_mount (0.2.1)
       rack
-    uuidtools (2.1.3)
+    uuidtools (2.1.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  coffee-filter
+  coffee-script
   dm-aggregates
   dm-constraints
   dm-core
@@ -167,3 +177,4 @@ DEPENDENCIES
   sys-filesystem
   systemu
   thin
+  tilt (~> 1.3.0)

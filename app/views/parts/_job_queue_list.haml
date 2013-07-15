@@ -4,14 +4,27 @@
   %tr
     -%w[待機番号 ファイル名 アクション 操作].each do |column_name|
       %th=column_name
-  -jobs.each do |job|
-    %tr
-      %td=job.priority
-      %td=link_to job.video.output_name, url(:videos, :show, :id=>job.video.id) rescue ''
-      %td=job.type
-      %td
-        =button_link('', url(:queue, :up, :id=>job.id), :icon=>'icon-arrow-up', :button_class=>'btn-small')
-        =button_link('', url(:queue, :down, :id=>job.id), :icon=>'icon-arrow-down', :button_class=>'btn-small')
-        =button_link('', url(:queue, :process, :id=>job.id), :icon=>'icon-play', :button_class=>'btn-small', :method=>:post)
-        =button_link('', url(:queue, :destroy, :id=>job.id), :icon=>'icon-remove-sign', :button_class=>'btn-small', :method=>:delete)
+  %tbody.sortable
+    -jobs.each do |job|
+      %tr.job_item{data: {:'job-id' => job.id}}
+        %td=job.priority
+        %td=link_to job.video.output_name, url(:videos, :show, :id=>job.video.id) rescue ''
+        %td=job.type
+        %td
+          =button_link('', url(:queue, :up, :id=>job.id), :icon=>'icon-arrow-up', :button_class=>'btn-small')
+          =button_link('', url(:queue, :down, :id=>job.id), :icon=>'icon-arrow-down', :button_class=>'btn-small')
+          =button_link('', url(:queue, :process, :id=>job.id), :icon=>'icon-play', :button_class=>'btn-small', :method=>:post)
+          =button_link('', url(:queue, :destroy, :id=>job.id), :icon=>'icon-remove-sign', :button_class=>'btn-small', :method=>:delete)
 
+:coffeescript
+  $ ->
+    $('.sortable').sortable(
+      update: ->
+        job_queue = $('.job_item').map ->
+          return $(this).data('job-id')
+        $.ajax(
+          method: 'put',
+          url: '/queue/update_all',
+          data: {order: job_queue.toArray()}
+        )
+    )
