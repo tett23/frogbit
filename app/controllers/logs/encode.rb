@@ -10,8 +10,9 @@ Frogbit.controllers :encode_logs, map: '/logs' do
 
         encode_log
       end.compact
-    end
 
+      @logs = Kaminari.paginate_array(@logs).page # ページネート可能な配列に変換
+    end
 
     render 'logs/encode/index'
   end
