@@ -78,7 +78,7 @@ class EncodeQueue
       }
     end
 
-    unless FileUtils.mv(out_path, self.output_path)
+    unless FileUtils.mv("'#{out_path}'", "'#{self.output_path}'")
       self.update(:is_encoding => false)
 
       return {
