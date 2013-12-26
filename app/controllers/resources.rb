@@ -8,10 +8,14 @@ Frogbit.controllers :resources do
     path = ''
     case settings.environment
     when :development
-      path = "#{PADRINO_ROOT}/out/#{@video.output_name}"
+      path = "#{$config[:output_dir]}/#{@video.output_name}"
     when :production
     end
 
-    send_file(path, :type=>'video/mp4')
+    send_file(
+      path,
+      type: 'video/mp4',
+      buffer_size: 4096
+    )
   end
 end

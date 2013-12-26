@@ -35,6 +35,8 @@ gem 'tilt', '~> 1.3.0'
 gem 'coffee-script'
 gem 'coffee-filter'
 
+gem 'unicorn'
+
 # Test requirements
 
 # Padrino Stable Gem
