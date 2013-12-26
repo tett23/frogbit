@@ -13,6 +13,7 @@ class Frogbit < Padrino::Application
   enable :sessions
 
   before do
+    @sidebar = true
     add_breadcrumbs('frogbit', '/')
   end
 

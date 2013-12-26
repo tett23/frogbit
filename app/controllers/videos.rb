@@ -20,6 +20,19 @@ Frogbit.controllers :videos do
     render 'videos/show', :layout=>'application'
   end
 
+  get :play, with: :id do |id|
+    @video = Video.detail(id)
+    error 404 if @video.nil?
+
+    add_breadcrumbs('動画一覧', url(:videos, :index))
+    add_breadcrumbs(@video.output_name, url(:videos, :show, :id=>id))
+    add_breadcrumbs('再生', url(:videos, :play, :id=>id))
+
+    @sidebar = false
+
+    render 'videos/play'
+  end
+
   get :edit, :with=>:id do |id|
     @video = Video.detail(id)
     error 404 if @video.nil?

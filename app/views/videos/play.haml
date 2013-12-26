@@ -1,0 +1,4 @@
+%video{controls: true}
+  %source{src: url(:resources, :video, id: @video.id, format: 'mp4')}
+
+=partial 'parts/video_infomation', locals: {video: @video}

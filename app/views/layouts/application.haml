@@ -29,8 +29,8 @@
           .nav-collapse.collapse
             =partial 'parts/header_menu'
     #wrap.container-fluid
-      .row-fluid
-        =partial 'parts/sidebar'
+      .row-fluid{style: 'padding-top: 40px'}
+        =partial 'parts/sidebar' if @sidebar
         .span9
           =breadcrumbs
           =flash_tag :success, :class=>'alert alert-success'

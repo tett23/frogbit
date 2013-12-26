@@ -1,0 +1,43 @@
+%table.table-bordered.table-striped
+  %tr
+    %th id
+    %td=video.id
+  %tr
+    %th event_id
+    %td=video.event_id
+  %tr
+    %th name
+    %td=video.name
+  %tr
+    %th output_name
+    %td=video.output_name
+  %tr
+    %th original_name
+    %td=video.original_name
+  %tr
+    %th episode_name
+    %td=video.episode_name
+  %tr
+    %th episode_number
+    %td=video.episode_number
+  %tr
+    %th saved_directory
+    %td=video.saved_directory
+  %tr
+    %th repaired_ts
+    %td=video.repaired_ts
+  %tr
+    %th filesize
+    %td=number_to_human_size video.filesize
+  %tr
+    %th is_encodable
+    %td=video.is_encodable
+  %tr
+    %th is_encoded
+    %td=video.is_encoded
+  %tr
+    %th program
+    %td=simple_format video.program
+  %tr
+    %th recording_error
+    %td=simple_format video.recording_error
