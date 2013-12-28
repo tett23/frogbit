@@ -73,6 +73,23 @@ class Video
     FileUtils.rm(repair_path())
   end
 
+  def self.search(keywords)
+    keywords = keywords.strip.split(/\s/)
+    return [] if keywords.size.zero?
+
+    # LIKEをむりやりANDさせる
+    a = keywords.map do |_|
+      'program like ?'
+    end.join(' and ')
+    items = all(:conditions => [a, *(keywords.map {|k| "%#{k}%"})])
+
+    video_ids = items.flatten.uniq.map do |v|
+      v.id
+    end
+
+    all(id: video_ids, order: [:name, :id.desc])
+  end
+
   private
   def repair_path
     "./tmp/#{self.identification_code}.ts"

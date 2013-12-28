@@ -4,3 +4,7 @@
   %li
     %a{href: '/'}Home
 %ul.nav.pull-right
+  =form_for :video, url(:search, :index), {class: 'navbar-form navbar-left', role: 'search', method: :get} do |f|
+    .form-group
+      =f.text_field :query, class: 'form-control', value: (params[:video] && !params[:video]['query'].blank? ? params[:video]['query']: '')
+      =button_tag :search, class: 'btn btn-default'
