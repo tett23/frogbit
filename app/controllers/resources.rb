@@ -15,7 +15,7 @@ Frogbit.controllers :resources do
     send_file(
       path,
       type: 'video/mp4',
-      buffer_size: 4096
+      buffer_size: 1024
     )
   end
 end
