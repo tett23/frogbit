@@ -12,6 +12,8 @@ Frogbit.controllers :resources do
     when :production
     end
 
+    status 206
+
     send_file(
       path,
       type: 'video/mp4',
