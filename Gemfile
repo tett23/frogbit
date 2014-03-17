@@ -37,6 +37,8 @@ gem 'coffee-filter'
 
 gem 'unicorn'
 
+gem 'rspec'
+
 # Test requirements
 
 # Padrino Stable Gem
