@@ -12,6 +12,6 @@
       %li=link_to 'ログ', url(:logs, :index)
       %li=link_to 'エンコードログ', url(:encode_logs, :index)
       %ul
-        %li=link_to 'TS未削除', url(:encode_logs, :index, exist_ts: true)
+        %li=link_to 'TS未削除', url(:disporsable, :index)
       %li.nav-header その他
       %li=link_to 'フィルタ', url(:filters, :index)
