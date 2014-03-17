@@ -2,7 +2,7 @@
 
 Frogbit.controllers :videos do
   get :index do
-    @videos = Video.list()
+    @videos = Video.list().page(params[:page] || 1)
     add_breadcrumbs('動画一覧', url(:videos, :index))
 
     render 'videos/index'
