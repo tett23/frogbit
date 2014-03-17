@@ -28,6 +28,7 @@ class Video
   belongs_to :video_metadata, :required=>false
 
   PER_PAGE = 20
+  DISPORSABLE_SIZE = 1000 * 1000 * 250 # 250MB以上のファイルなら削除してもいい
 
   def self.list(options={})
     default = {
@@ -90,8 +91,49 @@ class Video
     all(id: video_ids, order: [:name, :id.desc])
   end
 
+  def self.disporsable(size)
+    identification_codes = Dir::entries($config[:input_dir]).map do |filename|
+      next unless filename =~ REC_REGEX
+      next filename if File.extname(filename) == '.ts'
+    end.uniq.compact.map do |filename|
+      identification_code = TS.get_identification_code(filename)
+    end
+
+    disporsable_size = size.nil? ? Video::DISPORSABLE_SIZE : size.to_i
+    condition = ({
+      identification_code: identification_codes,
+      is_encoded: true
+    }.merge({:filesize.gt => disporsable_size}))
+
+    Video.list(condition)
+  end
+
+  def destroy_ts
+    FileUtils.rm(err_path) if File.exists?(err_path)
+    FileUtils.rm(program_path) if File.exists?(program_path)
+
+    if File.exists?(ts_path)
+      FileUtils.rm(ts_path)
+      true
+    else
+      false
+    end
+  end
+
   private
   def repair_path
     "./tmp/#{self.identification_code}.ts"
+  end
+
+  def ts_path
+    "#{$config[:input_dir]}/#{self.original_name}"
+  end
+
+  def err_path
+    ts_path+'.err'
+  end
+
+  def program_path
+    ts_path+'.program.txt'
   end
 end
