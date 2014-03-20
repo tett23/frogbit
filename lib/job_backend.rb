@@ -20,6 +20,8 @@ class JobBackend
   end
 
   def process_all
+    return unless @running_items.size.zero?
+
     EM.defer do
       while job = JobQueue.shift
         execute_job(job) if @running_items.size.zero?
