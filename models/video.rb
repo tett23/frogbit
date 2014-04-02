@@ -55,7 +55,7 @@ class Video
 
     command = "sh ./drop_sd.sh '#{ts}' #{repaired_ts}"
     out = ''
-    command_result = systemu(command, :out=>out)
+    systemu(command, :out=>out)
 
     self.update(repaired_ts: repaired_ts)
 
@@ -96,7 +96,7 @@ class Video
       next unless filename =~ REC_REGEX
       next filename if File.extname(filename) == '.ts'
     end.uniq.compact.map do |filename|
-      identification_code = TS.get_identification_code(filename)
+      TS.get_identification_code(filename)
     end
 
     disporsable_size = size.nil? ? Video::DISPORSABLE_SIZE : size.to_i
