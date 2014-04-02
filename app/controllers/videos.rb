@@ -45,7 +45,7 @@ Frogbit.controllers :videos do
     error 404 if @video.nil?
 
     params[:video][:episode_number] = nil if params[:video][:episode_number].blank?
-    params[:video][:output_name] = "#{params[:video][:name]}#{params[:video][:episode_number] ? '#'+params[:video][:episode_number].to_s : ''}#{params[:video][:episode_name] ? "「#{params[:video][:episode_name]}」" : ''}_#{@video.event_id}.mp4"
+    params[:video][:output_name] = "#{params[:video][:name]}#{params[:video][:episode_number].blank? ? '' : '#'+params[:video][:episode_number].to_s}#{params[:video][:episode_name].blank? ? '' : "「#{params[:video][:episode_name]}」"}_#{@video.event_id}.mp4"
 
     if @video.update(params[:video])
       flash[:success] = '編集しました'
