@@ -5,7 +5,7 @@ class Video
 
   property :id, Serial
   property :identification_code, String, :unique=>true
-  property :event_id, String, :unique=>true
+  property :event_id, String
   property :name, String, :required=>true
   property :output_name, String
   property :episode_name, String
