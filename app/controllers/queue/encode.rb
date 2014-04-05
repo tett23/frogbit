@@ -55,10 +55,10 @@ Frogbit.controllers :encode_queue, map: '/queue' do
       # すでに格納積みの場合はidが取得できない
       video = Video.first(:identification_code=>video.identification_code)
       next if video.nil?
-      next if EncodeQueue.first(video_id: video.id) || JobQueue.first(video_id: video.id) # キューに追加済み
+      next if !EncodeQueue.first(video_id: video.id).nil? || !JobQueue.first(video_id: video.id).nil? # キューに追加済み
 
       EncodeQueue.add_last(video.id)
-      JobQueue.push(video, :repair) if !video.recording_error.nil? && video.recording_error.scan('MPEG2 VIDEO').size > 1 # MPEG2 VIDEOの文字列がふたつ以上あったら前番組のSDが残っていることにしておく
+      JobQueue.push(video, :repair) if video.has_sd?
       JobQueue.push(video, :encode)
     end
 
