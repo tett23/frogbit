@@ -52,6 +52,8 @@ Frogbit.controllers :encode_queue, map: '/queue' do
 
       video = Video.create(video)
 
+      next if video.is_encoded
+
       # すでに格納積みの場合はidが取得できない
       video = Video.first(:identification_code=>video.identification_code)
       next if video.nil?
