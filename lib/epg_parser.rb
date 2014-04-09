@@ -39,7 +39,8 @@ class EPGParser
 
     process_program()
     process_name()
-    @name.strip!
+    @name = @name.gsub(/#\d+/, '').strip unless @name.blank?
+    @episode_number = @episode_number.to_i unless @episode_number.blank?
 
     program_hash()
   end
@@ -73,14 +74,13 @@ class EPGParser
     elsif @name =~ TITLE_FIRST_EPISODE_NUMBER # タイトルにすべての情報が含まれている
       matched = @name.match(TITLE_FIRST_EPISODE_NUMBER).to_a
       matched.delete_at(0)
-      @name, @episode_name, @episode_number = matched
+      @name, @episode_number, @episode_name = matched
     elsif @name =~  TITLE_AFTER_EPISODE_NUMBER # タイトルにすべての情報が含まれている
       matched = @name.match(TITLE_AFTER_EPISODE_NUMBER).to_a
       matched.delete_at(0)
       @name, @episode_name, @episode_number = matched
     elsif @name =~ ONLY_EPISODE_NUMBER_REGEX# タイトルに話数のみある
       @episode_number = @name.gsub(ONLY_EPISODE_NUMBER_REGEX, '\1')
-      @name = @name.gsub(/#\d+/, '')
     elsif @name =~ /^.+「(.+)」$/ # タイトルにサブタイのみある
       @episode_name = @name.gsub(/^.+「(.+)」$/, '\1')
       @name = @name.gsub(/^(.+)「.+」$/, '\1')

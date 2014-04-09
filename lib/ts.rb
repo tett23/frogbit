@@ -27,7 +27,8 @@ class TS
 
     parsed_data = parse_epg()
     return @program if parsed_data.nil?
-    @output_name = parsed_data[:name]
+    @name = parsed_data[:name]
+    @output_name = parsed_data[:output_name]
     @episode_name = parsed_data[:episode_name]
     @episode_number = parsed_data[:episode_number]
     @event_id = parsed_data[:event_id]
@@ -145,7 +146,8 @@ class TS
     @series_name = epg_parser.name
 
     {
-      name: epg_parser.output_name,
+      output_name: epg_parser.output_name,
+      name: parsed[:name],
       episode_name: parsed[:episode_name],
       episode_number: parsed[:episode_number],
       event_id: parsed[:event_id]
