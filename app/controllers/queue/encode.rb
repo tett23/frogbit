@@ -43,20 +43,18 @@ Frogbit.controllers :encode_queue, map: '/queue' do
     end
 
     ts_array.each do |ts|
-      video = ts.to_h(:video)
+      v = ts.to_h(:video)
 
       # シリーズの追加
       #series = Series.add_or_first(ts.to_h(:series)) || nil
       #p series
       #video[:series] = series
 
-      video = Video.create(video)
+      video = Video.first(identification_code: v[:identification_code])
+      video = Video.create(v) if video.nil?
 
       next if video.is_encoded
 
-      # すでに格納積みの場合はidが取得できない
-      video = Video.first(:identification_code=>video.identification_code)
-      next if video.nil?
       next if !EncodeQueue.first(video_id: video.id).nil? || !JobQueue.first(video_id: video.id).nil? # キューに追加済み
 
       EncodeQueue.add_last(video.id)
