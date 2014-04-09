@@ -54,7 +54,7 @@ class EncodeQueue
 
     in_path = self.input_path
     out_path = "./out/#{self.video.output_name}"
-    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}' #{self.width} #{self.height}"
+    command = "sh ts2mp4.sh '#{in_path}' '#{out_path}' #{self.width} #{self.height} 2>tmp/#{self.video.identification_code}.log"
 
     unless File.exists?(in_path)
       return {
