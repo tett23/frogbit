@@ -22,6 +22,10 @@
     .controls
       =f.text_field :episode_number, :value=>@video.episode_number
   .control-group
+    %label.control-label 修復済み
+    .controls
+      =f.text_field :repaired_ts, :value=>@video.repaired_ts
+  .control-group
     %label.control-label エンコード可能状態
     .controls
       =f.check_box :is_encodable
